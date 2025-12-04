@@ -55,10 +55,17 @@ public class UserController {
 	}
 	
 	
-	//on recupere les données envoyer en post dans delete si positive on supprime en fonction de l'id l'utilisateur et on redonne la liste
+	/*on recupere les données envoyer en post dans delete si positive on supprime en fonction de l'id l'utilisateur et on redonne la liste
 	@PostMapping("/delete/{id}")
 	public String deleteUser(@PathVariable UUID id) {
 	    userService.deleteById(id);
+	    return "redirect:/users";
+	}*/
+	@PostMapping("/delete")
+	public String deleteUsers(@RequestParam(value = "selected", required = false) List<UUID> ids) {
+	    if (ids != null) {
+	        ids.forEach(userService::deleteById);
+	    }
 	    return "redirect:/users";
 	}
 	
@@ -67,7 +74,7 @@ public class UserController {
 		User user = userService.findById(id);
 		model.addAttribute("showUser",user);
 	    return "/users/show";	
-	    //return new ModelAndView("/users/show","user",userService.findById(id));
+	    
 	}
 
 }
