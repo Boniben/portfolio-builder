@@ -1,0 +1,22 @@
+{{ > /partials/header }}
+
+<h1>Détail utilisateur</h1>
+
+
+{{#showUser}}
+
+<ul>
+	<li>Prénom :{{firstname}}</li>
+	<li>Nom :{{lastname}}</li>
+	<li>Login :{{username}}</li>
+	<li>Email :{{email}}</li>
+
+</ul>
+
+<a href="/users">Retour</a>
+
+
+{{/showUser}}
+
+
+{{ > /partials/footer }}
