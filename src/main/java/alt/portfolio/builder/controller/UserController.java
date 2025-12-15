@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import alt.portfolio.builder.dtos.UserRequestDto;
 import alt.portfolio.builder.entity.User;
 import alt.portfolio.builder.repository.UserRepository;
+import alt.portfolio.builder.services.DbUserService;
 import alt.portfolio.builder.services.UserServices;
 
 //
@@ -32,13 +34,23 @@ public class UserController {
 	//ici on donne acces au controller aux différents services
 	@Autowired
 	private UserServices userService;
-
+	
+	@Autowired
+	private DbUserService dbUserService;
+	
 	
 	//on recupere les info de user service on les passe a users et on les passe dans l'index
 	@GetMapping(path= {"","/"})
 	public ModelAndView index() {
 		return new ModelAndView("/users/index","users",userService.getUsers());
 	}
+
+	@GetMapping("/register/{username}/{password}")
+	@ResponseBody
+	public User createUser(@PathVariable String username, @PathVariable String password) {
+		return dbUserService.createUser(username, password);
+	}
+	
 	
 	//sert a recupérer des données depuis le serveur
 	@GetMapping("/create")
@@ -76,5 +88,7 @@ public class UserController {
 	    return "/users/show";	
 	    
 	}
+	
+	
 
 }
