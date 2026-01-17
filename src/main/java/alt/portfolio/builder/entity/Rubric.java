@@ -1,5 +1,4 @@
-/*package alt.portfolio.builder.entity;
-
+package alt.portfolio.builder.entity;
 
 import java.util.UUID;
 
@@ -11,26 +10,28 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class Rubric {
 	@Id
-	private UUID id= UUID.randomUUID();
-	
+	private UUID id = UUID.randomUUID();
+
 	@Column(length = 120, nullable = false)
 	private String name;
-	
+
 	@Column(length = 3, nullable = false)
 	private Integer order_;
-	
-	//A revoir
+
+	// A revoir
 	@ManyToOne()
-	private Rubric id_Profile;
-	
-	
-	//a revoir
+	private Profile profile;
+
+	// ok
 	@ManyToOne()
 	private Category category;
-	
-	
-	
-}*/
+
+	public void addCategory(Category category) {
+		this.category = category;
+	}
+
+}

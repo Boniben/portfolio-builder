@@ -1,0 +1,17 @@
+{{> /partials/header }}
+
+<h1>Éditer le profil</h1>
+
+<form method="post" action="/profiles/{{profile.id}}/edit">
+    <label>Nom</label>
+    <input type="text" name="name" value="{{profile.name}}">
+
+    <label>Description</label>
+    <textarea name="description">{{profile.description}}</textarea>
+
+    <button type="submit">Enregistrer</button>
+</form>
+
+<a href="/profiles/{{profile.id}}">← Annuler</a>
+
+{{> /partials/footer }}

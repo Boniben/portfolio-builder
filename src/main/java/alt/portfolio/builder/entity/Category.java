@@ -1,4 +1,4 @@
-/*package alt.portfolio.builder.entity;
+package alt.portfolio.builder.entity;
 
 
 import java.util.List;
@@ -28,10 +28,9 @@ public class Category {
 	@Column(length = 5, nullable = false)
 	private Boolean hasLink;
 	
-	//Arevoir
-	@OneToMany()
+	//ok
+	@OneToMany(mappedBy = "category")
 	private List<Rubric> Rubrics;
 	
 
 }
-*/

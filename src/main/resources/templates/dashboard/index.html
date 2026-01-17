@@ -1,0 +1,35 @@
+{{> /partials/header }}
+
+<h1>Bienvenue sur votre Portfolio builder !</h1>
+
+{{^isAuthenticated}}
+    <a href="/login">
+        <button>Se connecter</button>
+    </a>
+	<a href="/users/create">
+	    <button>Créer un compte</button>
+	</a>
+    
+{{/isAuthenticated}}
+
+{{#isAuthenticated}}
+
+    {{#isUser}}
+        <a href="/profiles">
+            <button>Mes profils</button>
+        </a>
+    {{/isUser}}
+
+    {{#isAdmin}}
+        <a href="/users">
+            <button>Liste des utilisateurs</button>
+        </a>
+    {{/isAdmin}}
+
+    <form action="/logout" method="post">
+        <button type="submit">Se déconnecter</button>
+    </form>
+
+{{/isAuthenticated}}
+
+{{> /partials/footer }}

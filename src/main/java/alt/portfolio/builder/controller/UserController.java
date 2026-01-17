@@ -67,12 +67,6 @@ public class UserController {
 	}
 	
 	
-	/*on recupere les données envoyer en post dans delete si positive on supprime en fonction de l'id l'utilisateur et on redonne la liste
-	@PostMapping("/delete/{id}")
-	public String deleteUser(@PathVariable UUID id) {
-	    userService.deleteById(id);
-	    return "redirect:/users";
-	}*/
 	@PostMapping("/delete")
 	public String deleteUsers(@RequestParam(value = "selected", required = false) List<UUID> ids) {
 	    if (ids != null) {
@@ -89,6 +83,7 @@ public class UserController {
 	    
 	}
 	
-	
 
+	    
 }
+

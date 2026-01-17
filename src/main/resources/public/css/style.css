@@ -1,0 +1,280 @@
+/* Clean, professional, nature-inspired stylesheet
+   - Uses CSS variables for easy theming
+   - Improved typography, spacing and forms
+   - Accessible focus styles and subtle animations
+*/
+:root{
+  --bg-page: #f4f1ea;      /* warm paper */
+  --bg-contrast: #ffffff;  /* card / surface */
+  --accent: #4a7c59;       /* deep leaf green */
+  --accent-2: #7fb77e;     /* lighter green */
+  --muted: #7a7a74;        /* muted text */
+  --border: #e2dfd6;       /* soft border */
+  --shadow: 0 6px 18px rgba(74,124,89,0.08);
+  --radius: 10px;
+  --max-width: 1100px;
+  --transition: 180ms ease;
+}
+.profile-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+/* Actions cachées par défaut */
+.profile-actions {
+    display: none;
+    gap: 6px;
+}
+
+/* AU SURVOL → affichage */
+.profile-item:hover .profile-actions {
+    display: inline-flex;
+}
+
+/* Global page styles */
+html,body{
+  height:100%;
+}
+body{
+  margin:0;
+  background: linear-gradient(180deg, #f7f6f2 0%, var(--bg-page) 100%);
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #222;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+}
+
+/* Centered container used by pages */
+.container{
+  max-width:var(--max-width);
+  margin: 32px auto;
+  padding: 0 20px;
+}
+
+/* Headings */
+h1, h2{
+  margin:0 0 12px 0;
+  font-weight:600;
+  color: var(--accent);
+  text-align:center;
+}
+h1{ font-size:2rem; margin-top:18px; }
+h2{ font-size:1.25rem; margin-top:12px; }
+
+/* Links */
+a{ color:var(--accent-2); text-decoration:none; }
+a:hover{ text-decoration:underline; }
+
+/* Lists and cards */
+ol, ul{
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+}
+li{
+  margin-bottom: 12px;
+}
+
+.card{
+  background: var(--bg-contrast);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.card:hover{ transform: translateY(-4px); box-shadow: 0 14px 28px rgba(74,124,89,0.08); }
+
+/* Form layout */
+form{
+  margin: 20px 0;
+  padding: 20px;
+  background: var(--bg-contrast);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.form-row{ display:flex; gap:12px; flex-wrap:wrap; }
+.form-group{ flex:1 1 240px; display:flex; flex-direction:column; }
+label{ font-size:0.95rem; color:var(--muted); margin-bottom:6px; }
+input[type="text"], input[type="email"], input[type="password"], select, textarea{
+  padding:10px 12px;
+  border:1px solid var(--border);
+  background: #fbfbfa;
+  border-radius:8px;
+  font-size:0.95rem;
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+textarea{ min-height:120px; resize:vertical; }
+input:focus, select:focus, textarea:focus{
+  outline:none;
+  border-color:var(--accent-2);
+  box-shadow: 0 4px 10px rgba(127,183,126,0.12);
+}
+
+/* Buttons */
+button, .btn{
+  display:inline-block;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor:pointer;
+  font-weight:600;
+  transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+}
+button:hover, .btn:hover{ transform: translateY(-2px); box-shadow: 0 8px 20px rgba(74,124,89,0.12); }
+button:active, .btn:active{ transform: translateY(0); }
+button[disabled]{ opacity:0.6; cursor:not-allowed; }
+
+/* Small utility classes */
+.text-muted{ color:var(--muted); font-size:0.95rem; }
+.row{ display:flex; gap:12px; flex-wrap:wrap; }
+.col{ flex:1; }
+
+/* Ordered list styled as cards */
+ol.portfolio-list{ padding:12px; display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+ol.portfolio-list li{ list-style:none; }
+.portfolio-item{
+  padding:12px;
+  border-radius:10px;
+  background: linear-gradient(180deg,#fff,#fbfdfa);
+  border:1px solid var(--border);
+}
+
+/* Accessibility helpers */
+:focus{
+  outline: 3px solid rgba(127,183,126,0.18);
+  outline-offset: 2px;
+}
+
+/* Responsive tweaks */
+@media (max-width:600px){
+  h1{ font-size:1.5rem; }
+  .container{ padding:0 12px; }
+  .form-row{ flex-direction:column; }
+}
+
+/* Small visual polish for lists/links inside templates */
+.summary{ color:#333; font-size:0.98rem; }
+.meta{ color:var(--muted); font-size:0.9rem; }
+
+/* End of stylesheet */
+
+/* ===== Profile SHOW : actions au survol des champs ===== */
+
+.profile-field {
+  position: relative;
+  padding: 8px 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* actions cachées par défaut */
+.profile-field .field-actions {
+  display: none;
+}
+
+/* affichage AU SURVOL DU CHAMP */
+.profile-field:hover .field-actions {
+  display: inline-flex;
+}
+
+/* bouton éditer discret */
+.field-actions .edit-btn {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* ===== Profile form layout ===== */
+
+.profile-form {
+  max-width: 720px;
+  margin: 40px auto;
+}
+
+/* grille principale */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* groupe de champ */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* champ sur toute la largeur */
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+/* labels */
+.form-group label {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+/* inputs */
+.form-group input,
+.form-group textarea {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 0.95rem;
+  background: #fbfbfa;
+}
+
+/* textarea équilibrée */
+.form-group textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+/* focus */
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent-2);
+  box-shadow: 0 6px 14px rgba(127,183,126,0.18);
+}
+
+/* actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+/* bouton */
+.form-actions button {
+  padding: 10px 22px;
+  font-size: 0.95rem;
+  border-radius: 10px;
+}
+
+@media (max-width: 700px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    justify-content: center;
+  }
+}
+

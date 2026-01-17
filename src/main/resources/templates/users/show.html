@@ -10,10 +10,28 @@
 	<li>Nom :{{lastname}}</li>
 	<li>Login :{{username}}</li>
 	<li>Email :{{email}}</li>
+	<li>Rôle :{{role}}</li>
+	
+	<li>Profiles associés :
+        <ul>
+            {{#profiles}}
+                <li><input type="checkbox" name="selected" value="{{id}}"><a href="/profiles/{{id}}">{{name}}</a></li>
+            {{/profiles}}
+            
+            {{^profiles}}
+                <li>Aucun profil associé</li>
+            {{/profiles}}
+        </ul>
 
 </ul>
 
-<a href="/users">Retour</a>
+<a href="/users/edit/{{id}}"><button>Modifier Utilisateur</button></a>
+<a href="/users/delete/{{id}}"><button>Supprimer Utilisateur</button></a>
+<a href="/users/{{id}}/profiles/edit"><button>Modifier les profils associés</button></a>
+<a href="/users/{{id}}/profiles/remove"><button>Supprimer un profil associé</button></a>
+<a href="/"><button>Retour au dashboard</button></a>
+
+
 
 
 {{/showUser}}

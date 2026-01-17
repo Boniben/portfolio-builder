@@ -1,0 +1,12 @@
+{{> /partials/header }}
+
+<h1>Créer un profil</h1>
+
+<form method="post" action="/profiles/create">
+    <input type="text" name="name" placeholder="Nom du profil" required />
+    <textarea name="description" placeholder="Description" required></textarea>
+
+    <button type="submit">Créer</button>
+</form>
+
+{{> /partials/footer }}

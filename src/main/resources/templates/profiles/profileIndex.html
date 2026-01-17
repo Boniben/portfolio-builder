@@ -1,0 +1,30 @@
+{{> /partials/header }}
+
+<h1>Mes profils</h1>
+
+<ul>
+{{#profiles}}
+<li class="profile-item">
+    <input type="checkbox" name="selected" value="{{id}}">
+
+    <a href="/profiles/{{id}}" class="profile-link">
+        {{name}}
+    </a>
+
+
+    {{#rubrics}}
+        <ul class="rubrics">
+            <li>{{title}}</li>
+        </ul>
+    {{/rubrics}}
+</li>
+{{/profiles}}
+
+</ul>
+
+<a href="/profiles/create"><button> + Créer un profil</button>	</a>
+<a href="/"><button> < Retour au dashboard</button></a>
+
+
+
+{{> /partials/footer }}

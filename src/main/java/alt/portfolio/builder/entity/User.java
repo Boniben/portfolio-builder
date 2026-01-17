@@ -1,11 +1,11 @@
 package alt.portfolio.builder.entity;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
@@ -18,59 +18,72 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-//on creer la correspondance avec la base
-
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @Table(name = "user")
-public class User implements UserDetails{
+public class User implements UserDetails {
+
 	@Id
-	private UUID id=UUID.randomUUID();
-	
+	private UUID id = UUID.randomUUID();
+
 	@Column(length = 45, nullable = false)
-	private String firstname="";
-	
+	private String firstname = "";
+
 	@Column(length = 45, nullable = false)
-	private String lastname;
-	
+	private String lastname = "";
+
 	@Column(length = 45, nullable = false, unique = true)
-	private String username;
-	
+	private String username = "";
+
 	@Column(length = 150, nullable = false, unique = true)
-	private String email;
-	
+	private String email = "";
+
 	@Column(length = 255, nullable = true)
 	private String password;
-	
-	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
+
+	// ✅ AJOUT : rôle simple stocké en base
+	// Valeurs attendues : "USER" ou "ADMIN"
+	@Column(length = 10, nullable = false)
+	private String role = "USER";
+
+	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Profile> profiles;
-	
-	//ajouter un profile méthode pour 
-	public void addProfile(Profile profile) {
-		this.profiles.add(profile);
-		profile.setOwner(this);
-	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new ArrayList<GrantedAuthority>();
+		// ✅ Spring attend "ROLE_XXXX"
+		return List.of(new SimpleGrantedAuthority("ROLE_" + role));
 	}
-	
+
 	@Override
 	public String getPassword() {
 		return password;
 	}
-	
-	
-	
-    @Override
-    public String getUsername() {
-        return username;
-    }
-	
-	
-	
-	
-	
-		
+
+	@Override
+	public String getUsername() {
+		return username;
+	}
+
+	// ✅ Ajouts conseillés pour éviter des bugs Spring Security
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }
