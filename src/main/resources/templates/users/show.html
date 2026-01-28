@@ -1,40 +1,38 @@
 {{ > /partials/header }}
 
-<h1>Détail utilisateur</h1>
+<main class="container">
+    <div class="card">
+        <h2>Détail utilisateur</h2>
 
+        {{#showUser}}
+        <div class="mt-8">
+            <div class="small"><strong>Prénom :</strong> {{firstname}}</div>
+            <div class="small"><strong>Nom :</strong> {{lastname}}</div>
+            <div class="small"><strong>Login :</strong> {{username}}</div>
+            <div class="small"><strong>Email :</strong> {{email}}</div>
+            <div class="small"><strong>Rôle :</strong> {{role}}</div>
+        </div>
 
-{{#showUser}}
-
-<ul>
-	<li>Prénom :{{firstname}}</li>
-	<li>Nom :{{lastname}}</li>
-	<li>Login :{{username}}</li>
-	<li>Email :{{email}}</li>
-	<li>Rôle :{{role}}</li>
-	
-	<li>Profiles associés :
-        <ul>
-            {{#profiles}}
-                <li><input type="checkbox" name="selected" value="{{id}}"><a href="/profiles/{{id}}">{{name}}</a></li>
-            {{/profiles}}
-            
-            {{^profiles}}
+        <div class="mt-8">
+            <strong>Profiles associés :</strong>
+            <ul>
+                {{#profiles}}
+                <li><a href="/profiles/{{id}}">{{name}}</a></li>
+                {{/profiles}}
+                {{^profiles}}
                 <li>Aucun profil associé</li>
-            {{/profiles}}
-        </ul>
+                {{/profiles}}
+            </ul>
+        </div>
 
-</ul>
-
-<a href="/users/edit/{{id}}"><button>Modifier Utilisateur</button></a>
-<a href="/users/delete/{{id}}"><button>Supprimer Utilisateur</button></a>
-<a href="/users/{{id}}/profiles/edit"><button>Modifier les profils associés</button></a>
-<a href="/users/{{id}}/profiles/remove"><button>Supprimer un profil associé</button></a>
-<a href="/"><button>Retour au dashboard</button></a>
-
-
-
-
-{{/showUser}}
-
+        <div class="actions mt-8">
+            <a class="button" href="/users/edit/{{id}}">Modifier Utilisateur</a>
+            <a class="button danger" href="/users/delete/{{id}}">Supprimer Utilisateur</a>
+            <a class="button secondary" href="/users/{{id}}/profiles/edit">Modifier les profils associés</a>
+            <a class="button ghost" href="/">Retour au dashboard</a>
+        </div>
+        {{/showUser}}
+    </div>
+</main>
 
 {{ > /partials/footer }}

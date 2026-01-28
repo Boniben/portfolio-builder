@@ -1,8 +1,10 @@
 {{ > /partials/header }}
 
-<h1>Liste des utilisateurs</h1>
+<h2>Liste des utilisateurs</h2>
 
-<a href="/users/create"> Ajouter un nouvel utilisateur</a>
+<div class="actions mb-8">
+    <a class="button" href="/users/create">Ajouter un nouvel utilisateur</a>
+</div>
 
 <!--afficher la liste des users dans un formulaire -->
 
@@ -18,7 +20,7 @@
 <!--on ajoute une case a cocher avec le selected et la value de l'id pour pouvoir la passer en post et la recup dans le controller de suppression -->
 
 	<input type="checkbox" name="selected" value="{{id}}">
-	<a href="users/show/{{id}}"> {{firstname}} {{lastname}} {{username}} {{email}}</a>
+	<a href="/users/show/{{id}}"> {{firstname}} {{lastname}} {{username}} {{email}}</a>
 	</li>
 {{/users}}
 </ol>
@@ -34,11 +36,14 @@
 </div>
 {{/users}}
 
-<button type="submit">Supprimer les utilisateurs sélectionnés</button>
 </form>
 
-<a href="/" class="ui button">
-    ← Retour au dashboard
-</a>
+<div class="mt-8">
+    <button class="button danger" formmethod="post" formaction="/users/delete">Supprimer les utilisateurs sélectionnés</button>
+</div>
+
+<div class="mt-8">
+    <a class="button ghost" href="/">← Retour au dashboard</a>
+</div>
 
 {{ > /partials/footer }}

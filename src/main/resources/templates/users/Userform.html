@@ -1,18 +1,32 @@
 {{ > /partials/header }}
 
-<form method="post" action="/users/create">
-{{#user}}
+<main class="container">
+    <div class="card">
+        <form method="post" action="/users/create">
+            {{#user}}
+            <div class="mb-8">
+                <input type="text" placeholder="Prénom" name="firstname" value="{{firstname}}" required>
+            </div>
+            <div class="mb-8">
+                <input type="text" placeholder="Nom" name="lastname" value="{{lastname}}" required>
+            </div>
+            <div class="mb-8">
+                <input type="text" placeholder="Login" name="username" value="{{username}}" required>
+            </div>
+            <div class="mb-8">
+                <input type="email" placeholder="Email" name="email" value="{{email}}" required>
+            </div>
+            <div class="mb-8">
+                <input type="password" placeholder="mot de passe" name="password" value="{{password}}" required>
+            </div>
 
-	<input type="text" placeholder="Prénom" name="firstname" value="{{firstname}}" required>
-	<input type="text" placeholder="Nom" name="lastname" value="{{lastname}}" required>
-	<input type="text" placeholder="Login" name="username" value="{{username}}" required>
-	<input type="email" placeholder="Email" name="email" value="{{email}}" required>
-	<input type="password" placeholder="mot de passe" name="password" value="{{password}}" required>
-	<button type="submit">Valider</button>
-	<a href="/users" type="">Retour</a>
-
-{{/user}}
-
-</form>
+            <div class="actions">
+                <button class="button" type="submit">Valider</button>
+                <a class="button ghost" href="/users">Retour</a>
+            </div>
+            {{/user}}
+        </form>
+    </div>
+</main>
 
 {{ > /partials/footer }}

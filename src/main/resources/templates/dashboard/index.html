@@ -3,33 +3,26 @@
 <h1>Bienvenue sur votre Portfolio builder !</h1>
 
 {{^isAuthenticated}}
-    <a href="/login">
-        <button>Se connecter</button>
-    </a>
-	<a href="/users/create">
-	    <button>Créer un compte</button>
-	</a>
-    
+    <div class="actions">
+        <a class="button" href="/login">Se connecter</a>
+        <a class="button secondary" href="/users/create">Créer un compte</a>
+    </div>
 {{/isAuthenticated}}
 
 {{#isAuthenticated}}
+    <div class="actions mt-8">
+        {{#isUser}}
+        <a class="button" href="/profiles">Mes profils</a>
+        {{/isUser}}
 
-    {{#isUser}}
-        <a href="/profiles">
-            <button>Mes profils</button>
-        </a>
-    {{/isUser}}
+        {{#isAdmin}}
+        <a class="button" href="/users">Liste des utilisateurs</a>
+        {{/isAdmin}}
 
-    {{#isAdmin}}
-        <a href="/users">
-            <button>Liste des utilisateurs</button>
-        </a>
-    {{/isAdmin}}
-
-    <form action="/logout" method="post">
-        <button type="submit">Se déconnecter</button>
-    </form>
-
+        <form action="/logout" method="post" style="display:inline-block; margin-left:8px;">
+            <button class="button ghost" type="submit">Se déconnecter</button>
+        </form>
+    </div>
 {{/isAuthenticated}}
 
 {{> /partials/footer }}

@@ -1,17 +1,26 @@
 {{> /partials/header }}
 
-<h1>Éditer le profil</h1>
+<main class="container">
+    <div class="card">
+        <h2>Éditer le profil</h2>
 
-<form method="post" action="/profiles/{{profile.id}}/edit">
-    <label>Nom</label>
-    <input type="text" name="name" value="{{profile.name}}">
+        <form method="post" action="/profiles/{{profile.id}}/edit" class="mt-8">
+            <div class="mb-8">
+                <label>Nom</label>
+                <input type="text" name="name" value="{{profile.name}}">
+            </div>
 
-    <label>Description</label>
-    <textarea name="description">{{profile.description}}</textarea>
+            <div class="mb-8">
+                <label>Description</label>
+                <textarea name="description">{{profile.description}}</textarea>
+            </div>
 
-    <button type="submit">Enregistrer</button>
-</form>
-
-<a href="/profiles/{{profile.id}}">← Annuler</a>
+            <div class="actions">
+                <button class="button" type="submit">Enregistrer</button>
+                <a class="button secondary" href="/profiles/{{profile.id}}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</main>
 
 {{> /partials/footer }}

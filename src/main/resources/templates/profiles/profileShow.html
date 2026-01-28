@@ -1,23 +1,27 @@
 {{> /partials/header }}
 
-<h1>Profil</h1>
+<main class="container">
+    <div class="card">
+        <h2>Profil</h2>
 
-<div class="profile-field">
-    <h2 class="profile-value">{{profile.name}}</h2>
+        <div class="profile-field mt-8">
+            <h3 class="profile-title">{{profile.name}}</h3>
+            <div class="field-actions">
+                <a class="button secondary" href="/profiles/{{profile.id}}/edit">Éditer</a>
+            </div>
+        </div>
 
-    <span class="field-actions">
-        <a href="/profiles/{{profile.id}}/edit" class="edit-btn">Éditer</a>
-    </span>
-</div>
+        <div class="profile-field">
+            <p class="profile-desc">{{profile.description}}</p>
+            <div class="field-actions mt-8">
+                <a class="button secondary" href="/profiles/{{profile.id}}/edit">Éditer</a>
+            </div>
+        </div>
 
-<div class="profile-field">
-    <p class="profile-value">{{profile.description}}</p>
-
-    <span class="field-actions">
-        <a href="/profiles/{{profile.id}}/edit" class="edit-btn">Éditer</a>
-    </span>
-</div>
-
-<a href="/profiles">← Retour</a>
+        <div class="mt-8">
+            <a class="button ghost" href="/profiles">← Retour</a>
+        </div>
+    </div>
+</main>
 
 {{> /partials/footer }}

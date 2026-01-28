@@ -1,30 +1,31 @@
 {{> /partials/header }}
 
-<h1>Mes profils</h1>
+<main class="container">
+    <div class="card">
+        <div class="flex" style="justify-content:space-between;align-items:center">
+            <h2>Mes profils</h2>
+            <div class="actions">
+                <a class="button" href="/profiles/create">+ Créer un profil</a>
+            </div>
+        </div>
 
-<ul>
-{{#profiles}}
-<li class="profile-item">
-    <input type="checkbox" name="selected" value="{{id}}">
+        <div class="profiles-grid mt-8">
+            {{#profiles}}
+            <div class="profile-card">
+                <div class="profile-title">{{name}}</div>
+                <div class="profile-desc">{{description}}</div>
+                <div class="profile-actions">
+                    <a class="button secondary" href="/profiles/{{id}}">Voir</a>
+                    <a class="button secondary" href="/profiles/{{id}}/edit">Éditer</a>
+                </div>
+            </div>
+            {{/profiles}}
+        </div>
 
-    <a href="/profiles/{{id}}" class="profile-link">
-        {{name}}
-    </a>
-
-
-    {{#rubrics}}
-        <ul class="rubrics">
-            <li>{{title}}</li>
-        </ul>
-    {{/rubrics}}
-</li>
-{{/profiles}}
-
-</ul>
-
-<a href="/profiles/create"><button> + Créer un profil</button>	</a>
-<a href="/"><button> < Retour au dashboard</button></a>
-
-
+        <div class="mt-8">
+            <a class="button ghost" href="/">← Retour au dashboard</a>
+        </div>
+    </div>
+</main>
 
 {{> /partials/footer }}
