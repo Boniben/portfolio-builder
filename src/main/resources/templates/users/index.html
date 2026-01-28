@@ -1,49 +1,39 @@
-{{ > /partials/header }}
+{{> /partials/header }}
 
 <h2>Liste des utilisateurs</h2>
 
 <div class="actions mb-8">
-    <a class="button" href="/users/create">Ajouter un nouvel utilisateur</a>
+  <a class="button" href="/users/create">Ajouter un nouvel utilisateur</a>
 </div>
 
-<!--afficher la liste des users dans un formulaire -->
+<form method="post" action="/users/delete">
 
+  <ol>
+    {{#users}}
+      <li>
+        <input type="checkbox" name="selected" value="{{id}}">
+        <a href="/users/show/{{id}}">
+          {{firstname}} {{lastname}} {{username}} {{email}}
+        </a>
+      </li>
+    {{/users}}
+  </ol>
 
-<form method="POST" action="/users/delete">
+  {{^users}}
+    <div>Aucun utilisateur à afficher</div>
+  {{/users}}
 
-<!--on parcours les objects user et on affiche les champs selectionner grace au dto -->
-
-<ol>
-{{#users}}
-	<li>
-	
-<!--on ajoute une case a cocher avec le selected et la value de l'id pour pouvoir la passer en post et la recup dans le controller de suppression -->
-
-	<input type="checkbox" name="selected" value="{{id}}">
-	<a href="/users/show/{{id}}"> {{firstname}} {{lastname}} {{username}} {{email}}</a>
-	</li>
-{{/users}}
-</ol>
-
-
-<!--Si pas de users ca affiche :-->
-
-{{^users}}
-
-
-<div>
-	Aucun utilisateur à afficher
-</div>
-{{/users}}
+  <!-- ✅ Le bouton doit être dans le form -->
+  <div class="mt-8">
+    <button type="submit" class="button danger">
+      Supprimer les utilisateurs sélectionnés
+    </button>
+  </div>
 
 </form>
 
 <div class="mt-8">
-    <button class="button danger" formmethod="post" formaction="/users/delete">Supprimer les utilisateurs sélectionnés</button>
+  <a class="button ghost" href="/">← Retour au dashboard</a>
 </div>
 
-<div class="mt-8">
-    <a class="button ghost" href="/">← Retour au dashboard</a>
-</div>
-
-{{ > /partials/footer }}
+{{> /partials/footer }}
