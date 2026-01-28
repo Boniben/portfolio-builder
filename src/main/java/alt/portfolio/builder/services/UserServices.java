@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import alt.portfolio.builder.dtos.UserRequestDto;
 import alt.portfolio.builder.entity.User;
+import alt.portfolio.builder.exeptions.EntityNotFoundException;
 import alt.portfolio.builder.repository.UserRepository;
 
 // Classe service contenant la logique métier liée aux utilisateurs
@@ -47,7 +48,11 @@ public class UserServices {
 	}
 
 	// Supprime un utilisateur en base à partir de son identifiant
-	public void deleteById(UUID id) {
+	public void deleteById(UUID id) throws EntityNotFoundException {
+		if (userRepository.findById(id).isEmpty()) {
+			throw new EntityNotFoundException("Utilisateur introuvable avec l'id : " + id);
+		}
 		userRepository.deleteById(id);
+
 	}
 }
