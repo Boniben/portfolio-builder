@@ -17,6 +17,7 @@
                 <div class="profile-actions">
                     <a class="button secondary" href="/profiles/{{id}}">Voir</a>
                     <a class="button secondary" href="/profiles/{{id}}/edit">Éditer</a>
+                    <a class="button danger" href="/profiles/{{id}}/deleteProfile" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce profil ?');">Supprimer</a>
                 </div>
             </div>
             {{/profiles}}

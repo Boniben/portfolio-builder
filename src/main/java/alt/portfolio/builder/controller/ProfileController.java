@@ -26,6 +26,10 @@ public class ProfileController {
 		this.profileServices = profileServices;
 	}
 
+	// Récupération de l'utilisateur connecté, récupération de ses profils via le
+	// service,
+	// si aucun profil -> redirige vers /profiles/create, sinon affiche la liste des
+	// profils (profiles/profileIndex)
 	@GetMapping
 	public String index(Authentication authentication, Model model) {
 		User user = (User) authentication.getPrincipal();
@@ -39,11 +43,15 @@ public class ProfileController {
 		return "profiles/profileIndex";
 	}
 
+	// Affiche le formulaire de création de profil (profiles/profileForm)
 	@GetMapping("/create")
 	public String createForm() {
 		return "profiles/profileForm";
 	}
 
+	// Récupération de l'utilisateur connecté + récupération des champs du
+	// formulaire (name + description),
+	// création du profil, puis redirection vers /profiles
 	@PostMapping("/create")
 	public String createProfile(Authentication authentication, @RequestParam("name") String name,
 			@RequestParam("description") String description) {
@@ -52,6 +60,9 @@ public class ProfileController {
 		return "redirect:/profiles";
 	}
 
+	// Récupération de l'id depuis l'URL (/profiles/{id}),
+	// récupération du profil correspondant via le service, puis affichage du détail
+	// (profiles/profileShow)
 	@GetMapping("/{id}")
 	public String showProfile(@PathVariable UUID id, Model model) {
 
@@ -61,6 +72,10 @@ public class ProfileController {
 		return "profiles/profileShow";
 	}
 
+	// Récupération de l'id depuis l'URL (/profiles/{id}/delete) + récupération de
+	// l'utilisateur connecté,
+	// suppression du profil si le profil appartient à l'utilisateur, puis
+	// redirection vers /profiles
 	@PostMapping("/{id}/delete")
 	public String deleteProfile(@PathVariable UUID id, Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
@@ -68,15 +83,21 @@ public class ProfileController {
 		return "redirect:/profiles";
 	}
 
+	// Récupération de l'id depuis l'URL (/profiles/{id}/edit),
+	// récupération du profil correspondant, pré-remplissage du formulaire, puis
+	// affichage de la vue (profiles/profileEdit)
 	@GetMapping("/{id}/edit")
 	public String editProfileForm(@PathVariable UUID id, Model model) {
 		Profile profile = profileServices.findById(id);
 		model.addAttribute("profile", profile);
-		// The template file is named `profileEdit.html` under `templates/profiles/`.
-		// Return the matching view name so the template engine can find it.
 		return "profiles/profileEdit";
 	}
 
+	// Récupération de l'id depuis l'URL (/profiles/{id}/edit) + récupération des
+	// champs modifiés (name + description)
+	// + récupération de l'utilisateur connecté,
+	// mise à jour du profil si le profil appartient à l'utilisateur, puis
+	// redirection vers /profiles/{id}
 	@PostMapping("/{id}/edit")
 	public String updateProfile(@PathVariable UUID id, @RequestParam("name") String name,
 			@RequestParam("description") String description, Authentication authentication) {
