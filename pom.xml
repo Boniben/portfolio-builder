@@ -41,7 +41,7 @@
 		<!-- Spring MVC avec exclusion de Tomcat pour utiliser Undertow à la place -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 			<!--
 			<exclusions>
 				<exclusion>
@@ -76,19 +76,10 @@
             <scope>runtime</scope>
         </dependency>
         
+		<!-- Dépendance de test standard Spring Boot (inclut JUnit, Mockito, Spring Test...) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mustache-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
