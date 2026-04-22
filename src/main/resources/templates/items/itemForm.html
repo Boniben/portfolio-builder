@@ -1,0 +1,46 @@
+{{> /partials/header }}
+
+<main class="container">
+    <div class="card">
+        <!-- Affiche le nom de la rubrique dans le titre -->
+        <h2>Ajouter un élément dans : {{rubric.name}}</h2>
+
+        <!-- Formulaire de création d'un élément -->
+        <!-- L'action pointe vers la route POST /rubrics/{id}/items/create -->
+        <form method="post" action="/rubrics/{{rubric.id}}/items/create" class="mt-8">
+
+            <!-- Champ obligatoire : titre de l'élément -->
+            <div class="mb-8">
+                <label>Titre</label>
+                <input type="text" name="title" placeholder="Ex: BTS SIO, Développeur Web..." required />
+            </div>
+
+            <!-- Champ optionnel : description -->
+            <div class="mb-8">
+                <label>Description (optionnel)</label>
+                <textarea name="description" placeholder="Décrivez cet élément..."></textarea>
+            </div>
+
+            <!-- Champ optionnel : date de début -->
+            <div class="mb-8">
+                <label>Date de début (optionnel)</label>
+                <input type="date" name="startDate" />
+            </div>
+
+            <!-- Champ optionnel : date de fin -->
+            <div class="mb-8">
+                <label>Date de fin (optionnel)</label>
+                <input type="date" name="endDate" />
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="actions">
+                <button class="button" type="submit">Ajouter</button>
+                <!-- profileId est passé par le contrôleur pour le lien de retour -->
+                <a class="button secondary" href="/profiles/{{profileId}}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+{{> /partials/footer }}

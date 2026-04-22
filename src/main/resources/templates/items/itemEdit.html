@@ -1,0 +1,45 @@
+{{> /partials/header }}
+
+<main class="container">
+    <div class="card">
+        <h2>Modifier l'élément</h2>
+
+        <!-- Formulaire de modification d'un élément -->
+        <!-- L'action pointe vers la route POST /items/{id}/edit -->
+        <form method="post" action="/items/{{item.id}}/edit" class="mt-8">
+
+            <!-- Champ : titre (pré-rempli avec la valeur actuelle) -->
+            <div class="mb-8">
+                <label>Titre</label>
+                <input type="text" name="title" value="{{item.title}}" required />
+            </div>
+
+            <!-- Champ : description (pré-remplie avec la valeur actuelle) -->
+            <div class="mb-8">
+                <label>Description (optionnel)</label>
+                <textarea name="description">{{item.description}}</textarea>
+            </div>
+
+            <!-- Champ : date de début (pré-remplie si elle existe) -->
+            <div class="mb-8">
+                <label>Date de début (optionnel)</label>
+                <input type="date" name="startDate" value="{{item.startDate}}" />
+            </div>
+
+            <!-- Champ : date de fin (pré-remplie si elle existe) -->
+            <div class="mb-8">
+                <label>Date de fin (optionnel)</label>
+                <input type="date" name="endDate" value="{{item.endDate}}" />
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="actions">
+                <button class="button" type="submit">Enregistrer</button>
+                <!-- profileId est passé par le contrôleur pour le lien de retour -->
+                <a class="button secondary" href="/profiles/{{profileId}}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+{{> /partials/footer }}

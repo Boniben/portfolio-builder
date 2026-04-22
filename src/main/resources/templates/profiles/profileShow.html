@@ -4,6 +4,7 @@
     <div class="card">
         <h2>Profil</h2>
 
+        <!-- Nom du profil avec bouton d'édition -->
         <div class="profile-field mt-8">
             <h3 class="profile-title">{{profile.name}}</h3>
             <div class="field-actions">
@@ -11,6 +12,7 @@
             </div>
         </div>
 
+        <!-- Description du profil avec bouton d'édition -->
         <div class="profile-field">
             <p class="profile-desc">{{profile.description}}</p>
             <div class="field-actions mt-8">
@@ -18,6 +20,79 @@
             </div>
         </div>
 
+        <!-- ===== SECTION RUBRIQUES ===== -->
+        <div class="mt-8">
+            <h3>Rubriques</h3>
+
+            <!-- Bouton pour ajouter une nouvelle rubrique à ce profil -->
+            <a class="button" href="/profiles/{{profile.id}}/rubrics/create">+ Ajouter une rubrique</a>
+
+            <!-- Boucle sur toutes les rubriques du profil -->
+            {{#profile.rubrics}}
+            <div class="card mt-8">
+
+                <!-- En-tête de la rubrique : nom, catégorie et boutons -->
+                <div class="profile-field">
+                    <h4>{{name}} <small>({{category.name}})</small></h4>
+                    <div class="field-actions">
+                        <!-- Bouton modifier la rubrique -->
+                        <a class="button secondary" href="/rubrics/{{id}}/edit">Modifier</a>
+
+                        <!-- Bouton supprimer la rubrique (avec confirmation) -->
+                        <form method="post" action="/rubrics/{{id}}/delete" style="display:inline">
+                            <button class="button danger" type="submit"
+                                onclick="return confirm('Supprimer cette rubrique et tous ses éléments ?')">
+                                Supprimer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Boucle sur les éléments de cette rubrique -->
+                {{#items}}
+                <div class="profile-field">
+                    <div>
+                        <!-- Titre de l'élément -->
+                        <strong>{{title}}</strong>
+
+                        <!-- Dates (affichées seulement si elles existent) -->
+                        {{#startDate}}<span> | Du {{startDate}}</span>{{/startDate}}
+                        {{#endDate}}<span> au {{endDate}}</span>{{/endDate}}
+
+                        <!-- Description de l'élément -->
+                        <p>{{description}}</p>
+                    </div>
+                    <div class="field-actions">
+                        <!-- Bouton modifier l'élément -->
+                        <a class="button secondary" href="/items/{{id}}/edit">Modifier</a>
+
+                        <!-- Bouton supprimer l'élément (avec confirmation) -->
+                        <form method="post" action="/items/{{id}}/delete" style="display:inline">
+                            <button class="button danger" type="submit"
+                                onclick="return confirm('Supprimer cet élément ?')">
+                                Supprimer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {{/items}}
+
+                <!-- Bouton pour ajouter un élément dans cette rubrique -->
+                <!-- Note : {{id}} ici = id de la rubrique (on est hors de la boucle items) -->
+                <div class="mt-8">
+                    <a class="button ghost" href="/rubrics/{{id}}/items/create">+ Ajouter un élément</a>
+                </div>
+
+            </div>
+            {{/profile.rubrics}}
+
+            <!-- Message affiché si le profil n'a aucune rubrique -->
+            {{^profile.rubrics}}
+            <p class="mt-8">Aucune rubrique pour l'instant. Commencez par en ajouter une !</p>
+            {{/profile.rubrics}}
+        </div>
+
+        <!-- Bouton retour vers la liste des profils -->
         <div class="mt-8">
             <a class="button ghost" href="/profiles">← Retour</a>
         </div>

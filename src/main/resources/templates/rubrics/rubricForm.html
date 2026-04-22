@@ -1,0 +1,37 @@
+{{> /partials/header }}
+
+<main class="container">
+    <div class="card">
+        <h2>Ajouter une rubrique</h2>
+
+        <!-- Formulaire de création d'une rubrique -->
+        <!-- L'action pointe vers la route POST /profiles/{id}/rubrics/create -->
+        <form method="post" action="/profiles/{{profile.id}}/rubrics/create" class="mt-8">
+
+            <!-- Champ : nom de la rubrique -->
+            <div class="mb-8">
+                <label>Nom de la rubrique</label>
+                <input type="text" name="name" placeholder="Ex: Mes formations, Mes expériences..." required />
+            </div>
+
+            <!-- Liste déroulante : choix de la catégorie -->
+            <!-- Les catégories sont injectées par le contrôleur (Formation, Expérience...) -->
+            <div class="mb-8">
+                <label>Catégorie</label>
+                <select name="categoryId" required>
+                    {{#categories}}
+                    <option value="{{id}}">{{name}}</option>
+                    {{/categories}}
+                </select>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="actions">
+                <button class="button" type="submit">Ajouter</button>
+                <a class="button secondary" href="/profiles/{{profile.id}}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+{{> /partials/footer }}
