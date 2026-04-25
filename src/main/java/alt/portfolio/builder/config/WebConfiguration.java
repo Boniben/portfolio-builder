@@ -14,7 +14,8 @@ public class WebConfiguration implements WebMvcConfigurer {
 		// racine → dashboard
 		registry.addViewController("/").setViewName("dashboard/index");
 
-		// Redirige l'URL "/login" vers la vue "/users/formLogin"
-		registry.addViewController("/login").setViewName("/users/formLogin");
+		// Redirige l'URL "/login" vers la vue "users/formLogin"
+		// ⚠️ Pas de "/" au début du nom de la vue → sinon double slash dans le chemin Mustache → boucle de redirection
+		registry.addViewController("/login").setViewName("users/formLogin");
 	}
 }
