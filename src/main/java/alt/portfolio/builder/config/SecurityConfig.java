@@ -29,7 +29,9 @@ public class SecurityConfig {
 								PathPatternRequestMatcher.withDefaults().matcher("/css/**"),
 								PathPatternRequestMatcher.withDefaults().matcher("/js/**"),
 								PathPatternRequestMatcher.withDefaults().matcher("/img/**"),
+								PathPatternRequestMatcher.withDefaults().matcher("/users/create"),
 								PathPatternRequestMatcher.withDefaults().matcher("/users/create/**"),
+								PathPatternRequestMatcher.withDefaults().matcher("/users/register"),
 								PathPatternRequestMatcher.withDefaults().matcher("/users/register/**"))
 						.permitAll()
 
