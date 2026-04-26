@@ -1,28 +1,216 @@
 {{>partials/header}}
 
-<h1>Bienvenue sur votre Portfolio builder !</h1>
+<!-- ===== HERO ===== -->
+<main class="container">
+    <div class="card" style="text-align:center; padding: 48px 32px; background: linear-gradient(135deg, rgba(47,157,106,0.08), rgba(47,157,106,0.02));">
+        <div style="font-size: 48px; margin-bottom: 12px;">📄</div>
+        <h1 style="font-size: 32px; font-weight: 800; color: var(--green-700); margin: 0 0 12px 0;">
+            Portfolio Builder
+        </h1>
+        <p style="color: var(--muted); font-size: 16px; max-width: 520px; margin: 0 auto 28px auto; line-height: 1.7;">
+            Créez et exportez votre CV professionnel en quelques minutes.
+            Organisez vos rubriques, choisissez un template et téléchargez votre PDF.
+        </p>
 
-{{^isAuthenticated}}
-    <div class="actions">
-        <a class="button" href="/login">Se connecter</a>
-        <a class="button secondary" href="/users/create">Créer un compte</a>
+        <!-- Boutons selon l'état de connexion -->
+        {{^isAuthenticated}}
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+            <a class="button" href="/users/create" style="font-size:15px; padding: 12px 24px;">
+                🚀 Créer un compte
+            </a>
+            <a class="button secondary" href="/login" style="font-size:15px; padding: 12px 24px;">
+                Se connecter
+            </a>
+        </div>
+        {{/isAuthenticated}}
+
+        {{#isAuthenticated}}
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+            <a class="button" href="/profiles" style="font-size:15px; padding: 12px 24px;">
+                📂 Mes profils
+            </a>
+            {{#isAdmin}}
+            <a class="button secondary" href="/users" style="font-size:15px; padding: 12px 24px;">
+                ⚙ Administration
+            </a>
+            {{/isAdmin}}
+        </div>
+        {{/isAuthenticated}}
     </div>
-{{/isAuthenticated}}
 
-{{#isAuthenticated}}
-    <div class="actions mt-8">
-        {{#isUser}}
-        <a class="button" href="/profiles">Mes profils</a>
-        {{/isUser}}
+    <!-- ===== SECTION PRINCIPALE : schéma + faux CV ===== -->
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; align-items: start;">
 
-        {{#isAdmin}}
-        <a class="button" href="/users">Liste des utilisateurs</a>
-        {{/isAdmin}}
+        <!-- ===== COLONNE GAUCHE : schéma de structure ===== -->
+        <div class="card">
+            <h2 style="font-size: 18px; font-weight: 700; color: var(--green-700); margin: 0 0 20px 0;">
+                🗂 Comment ça fonctionne ?
+            </h2>
 
-        <form action="/logout" method="post" style="display:inline-block; margin-left:8px;">
-            <button class="button ghost" type="submit">Se déconnecter</button>
-        </form>
+            <!-- Niveau 1 : Compte -->
+            <div style="text-align:center;">
+                <div style="display:inline-block; background: var(--green-500); color:white; border-radius:12px; padding: 12px 24px; font-weight:700; font-size:14px; box-shadow: 0 4px 12px rgba(47,157,106,0.25);">
+                    👤 Votre compte
+                </div>
+                <div style="color:#ccc; font-size:22px; line-height:1; margin:6px 0;">↓</div>
+                <div style="color:var(--muted); font-size:12px; margin-bottom:6px;">Vous créez</div>
+            </div>
+
+            <!-- Niveau 2 : Profil -->
+            <div style="text-align:center;">
+                <div style="display:inline-block; background: #eaf7f0; border: 2px solid var(--green-500); color:var(--green-700); border-radius:12px; padding: 10px 20px; font-weight:700; font-size:14px;">
+                    📄 Un profil
+                    <div style="font-size:11px; font-weight:400; color:var(--muted); margin-top:2px;">ex : "CV Développeur"</div>
+                </div>
+
+                <!-- Flèche avec indicateur multiple -->
+                <div style="color:#ccc; font-size:22px; line-height:1; margin:6px 0;">↓</div>
+                <div style="color:var(--muted); font-size:12px; margin-bottom:6px;">contient plusieurs</div>
+            </div>
+
+            <!-- Niveau 3 : Rubriques -->
+            <div style="text-align:center;">
+                <div style="display:inline-flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:4px;">
+                    <div style="background:#f0f0f0; border-radius:8px; padding:8px 14px; font-size:13px; font-weight:600; color:#444;">
+                        📁 Formation
+                    </div>
+                    <div style="background:#f0f0f0; border-radius:8px; padding:8px 14px; font-size:13px; font-weight:600; color:#444;">
+                        📁 Expérience
+                    </div>
+                    <div style="background:#f0f0f0; border-radius:8px; padding:8px 14px; font-size:13px; font-weight:600; color:#444;">
+                        📁 Compétences
+                    </div>
+                </div>
+                <div style="color:#ccc; font-size:22px; line-height:1; margin:6px 0;">↓</div>
+                <div style="color:var(--muted); font-size:12px; margin-bottom:6px;">contient plusieurs</div>
+            </div>
+
+            <!-- Niveau 4 : Éléments -->
+            <div style="text-align:center;">
+                <div style="display:inline-flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:16px;">
+                    <div style="background:#fffbea; border: 1px solid #f0d060; border-radius:8px; padding:8px 14px; font-size:12px; color:#555; text-align:left;">
+                        <strong>BTS SIO</strong><br>
+                        <span style="color:#aaa; font-size:11px;">2024 – 2026</span>
+                    </div>
+                    <div style="background:#fffbea; border: 1px solid #f0d060; border-radius:8px; padding:8px 14px; font-size:12px; color:#555; text-align:left;">
+                        <strong>Stage Dev Web</strong><br>
+                        <span style="color:#aaa; font-size:11px;">2025</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Résultat final -->
+            <div style="border-top: 1px solid #eee; padding-top: 16px; text-align:center;">
+                <div style="color:var(--muted); font-size:12px; margin-bottom:8px;">et vous exportez en</div>
+                <div style="display:inline-block; background: #1a1a1a; color:white; border-radius:10px; padding: 10px 20px; font-weight:700; font-size:14px;">
+                    ⬇ CV en PDF
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== COLONNE DROITE : faux CV généré ===== -->
+        <div>
+            <h2 style="font-size: 18px; font-weight: 700; color: var(--green-700); margin: 0 0 12px 0;">
+                📑 Exemple de CV généré
+            </h2>
+
+            <!-- Simulation d'une page A4 -->
+            <div style="background:white; border-radius:8px; box-shadow: 0 8px 32px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08); overflow:hidden; font-family: Arial, sans-serif;">
+
+                <!-- En-tête du CV (style template Classique) -->
+                <div style="background:#1a1a1a; color:white; padding:20px 24px;">
+                    <div style="font-size:20px; font-weight:800; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px;">
+                        Jean Dupont
+                    </div>
+                    <div style="font-size:11px; color:#ccc; line-height:1.5;">
+                        Développeur Web passionné, à la recherche d'une alternance en informatique.
+                    </div>
+                </div>
+
+                <!-- Corps du CV -->
+                <div style="padding:16px 24px; font-size:11px; color:#333;">
+
+                    <!-- Rubrique Formation -->
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; border-bottom:2px solid #1a1a1a; padding-bottom:3px; margin-bottom:8px; color:#1a1a1a;">
+                            Formation
+                        </div>
+                        <div style="padding-left:10px; border-left:3px solid #ddd; margin-bottom:6px;">
+                            <strong style="display:block; font-size:11px;">BTS SIO option SLAM</strong>
+                            <span style="color:#888; font-size:10px; font-style:italic;">2024 – 2026 | Lycée technique, Caen</span>
+                            <p style="margin:3px 0 0 0; font-size:10px; color:#555;">Développement logiciel et création d'applications web adaptées.</p>
+                        </div>
+                        <div style="padding-left:10px; border-left:3px solid #ddd;">
+                            <strong style="display:block; font-size:11px;">Baccalauréat STI2D</strong>
+                            <span style="color:#888; font-size:10px; font-style:italic;">2022 – 2024</span>
+                        </div>
+                    </div>
+
+                    <!-- Rubrique Expérience -->
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; border-bottom:2px solid #1a1a1a; padding-bottom:3px; margin-bottom:8px; color:#1a1a1a;">
+                            Expérience
+                        </div>
+                        <div style="padding-left:10px; border-left:3px solid #ddd;">
+                            <strong style="display:block; font-size:11px;">Stage développeur – Entreprise XYZ</strong>
+                            <span style="color:#888; font-size:10px; font-style:italic;">Avril 2025 – Juin 2025</span>
+                            <p style="margin:3px 0 0 0; font-size:10px; color:#555;">Développement d'une application de gestion interne en Spring Boot.</p>
+                        </div>
+                    </div>
+
+                    <!-- Rubrique Compétences -->
+                    <div>
+                        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; border-bottom:2px solid #1a1a1a; padding-bottom:3px; margin-bottom:8px; color:#1a1a1a;">
+                            Compétences
+                        </div>
+                        <div style="padding-left:10px; border-left:3px solid #ddd;">
+                            <strong style="display:block; font-size:11px;">Développement Web</strong>
+                            <p style="margin:3px 0 0 0; font-size:10px; color:#555;">Java, Spring Boot, HTML/CSS, JavaScript, SQL, Git</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Pied de page du CV -->
+                <div style="background:#f5f5f5; padding:8px 24px; text-align:center; font-size:10px; color:#aaa; border-top:1px solid #eee;">
+                    Généré avec Portfolio Builder • jean.dupont@email.fr
+                </div>
+            </div>
+
+            <!-- Badge template utilisé -->
+            <div style="margin-top:10px; text-align:center;">
+                <span style="font-size:12px; color:var(--muted);">
+                    Template utilisé : <strong style="color:var(--green-700);">Classique</strong>
+                    — parmi 6 templates disponibles
+                </span>
+            </div>
+        </div>
+
     </div>
-{{/isAuthenticated}}
+
+    <!-- ===== BANDE DE FONCTIONNALITÉS ===== -->
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:24px;">
+
+        <div class="card" style="text-align:center; padding:20px;">
+            <div style="font-size:32px; margin-bottom:8px;">🎨</div>
+            <div style="font-weight:700; color:var(--green-700); margin-bottom:6px;">6 templates PDF</div>
+            <div style="font-size:13px; color:var(--muted);">Classique, Moderne, Minimaliste, Fun, Informatique, Manuel</div>
+        </div>
+
+        <div class="card" style="text-align:center; padding:20px;">
+            <div style="font-size:32px; margin-bottom:8px;">↕</div>
+            <div style="font-weight:700; color:var(--green-700); margin-bottom:6px;">Glisser-déposer</div>
+            <div style="font-size:13px; color:var(--muted);">Réorganisez vos rubriques et éléments par simple glisser-déposer</div>
+        </div>
+
+        <div class="card" style="text-align:center; padding:20px;">
+            <div style="font-size:32px; margin-bottom:8px;">👁</div>
+            <div style="font-weight:700; color:var(--green-700); margin-bottom:6px;">Contrôle de visibilité</div>
+            <div style="font-size:13px; color:var(--muted);">Masquez certaines rubriques du PDF sans les supprimer</div>
+        </div>
+
+    </div>
+
+</main>
 
 {{>partials/footer}}
