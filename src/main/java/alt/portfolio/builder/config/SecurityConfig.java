@@ -26,8 +26,7 @@ public class SecurityConfig {
 						.requestMatchers(
 								"/", "/login",
 								"/css/**", "/js/**", "/img/**",
-								"/users/create", "/users/create/**",
-								"/users/register", "/users/register/**")
+								"/register", "/register/**")
 						.permitAll()
 
 						// ✅ ADMIN seulement

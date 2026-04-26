@@ -1,0 +1,72 @@
+{{>partials/header}}
+
+<main class="container">
+    <div class="card">
+        <h2>Créer un compte</h2>
+
+        <form method="post" action="/register" id="registerForm" class="mt-8">
+            <div class="mb-8">
+                <label>Prénom</label>
+                <input type="text" placeholder="Prénom" name="firstname" required>
+            </div>
+            <div class="mb-8">
+                <label>Nom</label>
+                <input type="text" placeholder="Nom" name="lastname" required>
+            </div>
+            <div class="mb-8">
+                <label>Login</label>
+                <input type="text" placeholder="Nom d'utilisateur" name="username" required>
+            </div>
+            <div class="mb-8">
+                <label>Email</label>
+                <input type="email" placeholder="Email" name="email" required>
+            </div>
+
+            <!-- Mot de passe -->
+            <div class="mb-8">
+                <label>Mot de passe</label>
+                <input type="password" placeholder="Mot de passe" name="password" id="password" required>
+            </div>
+
+            <!-- Confirmation du mot de passe (vérification JS uniquement, non envoyé au serveur) -->
+            <div class="mb-8">
+                <label>Confirmer le mot de passe</label>
+                <input type="password" placeholder="Répétez le mot de passe" id="passwordConfirm" required>
+                <p id="passwordError" style="color:#e35b4c; font-size:13px; margin-top:4px; display:none;">
+                    ❌ Les mots de passe ne correspondent pas.
+                </p>
+            </div>
+
+            <div class="actions">
+                <button class="button" type="submit">Créer le compte</button>
+                <a class="button ghost" href="/">Annuler</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script>
+    var password = document.getElementById('password');
+    var passwordConfirm = document.getElementById('passwordConfirm');
+    var errorMsg = document.getElementById('passwordError');
+
+    // Vérifie en temps réel si les mots de passe correspondent
+    passwordConfirm.addEventListener('input', function() {
+        if (passwordConfirm.value && password.value !== passwordConfirm.value) {
+            errorMsg.style.display = 'block';
+        } else {
+            errorMsg.style.display = 'none';
+        }
+    });
+
+    // Bloque la soumission si les mots de passe ne correspondent pas
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        if (password.value !== passwordConfirm.value) {
+            e.preventDefault();
+            errorMsg.style.display = 'block';
+            passwordConfirm.focus();
+        }
+    });
+</script>
+
+{{>partials/footer}}
