@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        /* ===== TEMPLATE MANUEL : document technique, numéroté, structuré ===== */
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "DejaVu Serif", Georgia, serif;
+            font-size: 11px;
+            background: white;
+            color: #1a1a1a;
+            padding: 36px 48px;
+        }
+
+        /* ---- Page de garde façon document officiel ---- */
+        .cover {
+            border: 2px solid #1a1a1a;
+            padding: 24px;
+            margin-bottom: 28px;
+            text-align: center;
+        }
+        .cover .doc-type {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        .cover h1 {
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            border-top: 1px solid #1a1a1a;
+            border-bottom: 1px solid #1a1a1a;
+            padding: 8px 0;
+        }
+        .cover .desc {
+            font-size: 11px;
+            color: #555;
+            font-style: italic;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+        .cover .ref {
+            font-size: 9px;
+            color: #888;
+            margin-top: 14px;
+            font-family: "DejaVu Sans Mono", monospace;
+        }
+
+        /* ---- Compteur automatique pour numéroter les rubriques ---- */
+        .body {
+            counter-reset: section;
+        }
+
+        /* ---- Chaque rubrique ---- */
+        .rubric {
+            margin-bottom: 22px;
+            counter-increment: section;
+        }
+
+        /* ---- Titre rubrique numéroté ---- */
+        .rubric h3 {
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #1a1a1a;
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .rubric h3::before {
+            content: counter(section) ". ";
+        }
+
+        /* ---- Compteur pour les éléments ---- */
+        .rubric {
+            counter-reset: item;
+        }
+
+        /* ---- Chaque élément ---- */
+        .item {
+            margin-bottom: 10px;
+            padding: 6px 10px;
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            counter-increment: item;
+        }
+        .item strong {
+            font-size: 12px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .item strong::before {
+            content: counter(section) "." counter(item) "  ";
+            color: #888;
+            font-size: 10px;
+        }
+        .dates {
+            font-size: 10px;
+            color: #666;
+            font-style: italic;
+        }
+        .item p {
+            font-size: 10px;
+            color: #444;
+            margin-top: 3px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page de garde façon document technique officiel -->
+    <div class="cover">
+        <div class="doc-type">Curriculum Vitæ — Document officiel</div>
+        <h1>{{ownerName}}</h1>
+        <div class="desc">{{description}}</div>
+        <div class="ref">REF : CV-{{ownerName}}</div>
+    </div>
+
+    <!-- Corps : rubriques numérotées générées par PdfService -->
+    <div class="body">
+        {{rubrics}}
+    </div>
+
+</body>
+</html>

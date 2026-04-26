@@ -76,6 +76,13 @@
             <scope>runtime</scope>
         </dependency>
         
+		<!-- openhtmltopdf : conversion HTML → PDF pour l'export du CV -->
+		<dependency>
+		    <groupId>com.openhtmltopdf</groupId>
+		    <artifactId>openhtmltopdf-pdfbox</artifactId>
+		    <version>1.0.10</version>
+		</dependency>
+
 		<!-- Dépendance de test standard Spring Boot (inclut JUnit, Mockito, Spring Test...) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

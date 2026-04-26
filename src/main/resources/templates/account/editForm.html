@@ -1,0 +1,115 @@
+{{>partials/header}}
+
+<main class="container">
+    <div class="card">
+        <h2>Modifier mes informations</h2>
+
+        <!-- Message de succès après enregistrement -->
+        {{#success}}
+        <p class="mt-8" style="color: green;">✅ Modifications enregistrées avec succès.</p>
+        {{/success}}
+
+        <!-- Message d'erreur (ex: mauvais mot de passe actuel) -->
+        {{#error}}
+        <p class="mt-8" style="color: red;">{{error}}</p>
+        {{/error}}
+
+        <!-- Formulaire de modification des infos personnelles et du mot de passe -->
+        <!-- Le username (login) n'est pas modifiable : c'est l'identifiant de connexion -->
+        <form method="post" action="/account/edit" class="mt-8" id="editForm">
+
+            <!-- ===== SECTION INFOS PERSONNELLES ===== -->
+            <h3>Informations personnelles</h3>
+
+            <!-- Prénom -->
+            <div class="mb-8">
+                <label>Prénom</label>
+                <input type="text" name="firstname" value="{{user.firstname}}" required />
+            </div>
+
+            <!-- Nom -->
+            <div class="mb-8">
+                <label>Nom</label>
+                <input type="text" name="lastname" value="{{user.lastname}}" required />
+            </div>
+
+            <!-- Login affiché en lecture seule (non modifiable) -->
+            <div class="mb-8">
+                <label>Login (non modifiable)</label>
+                <input type="text" value="{{user.username}}" disabled />
+            </div>
+
+            <!-- Email -->
+            <div class="mb-8">
+                <label>Email</label>
+                <input type="email" name="email" value="{{user.email}}" required />
+            </div>
+
+            <!-- ===== SECTION CHANGEMENT DE MOT DE PASSE ===== -->
+            <!-- Les champs sont optionnels : laisser vide pour ne pas changer le mdp -->
+            <hr class="mt-8">
+            <h3 class="mt-8">Changer de mot de passe <small>(optionnel)</small></h3>
+
+            <!-- Mot de passe actuel : obligatoire pour confirmer l'identité -->
+            <div class="mb-8">
+                <label>Mot de passe actuel</label>
+                <input type="password" name="currentPassword"
+                       placeholder="Requis uniquement si vous changez de mot de passe" />
+            </div>
+
+            <!-- Nouveau mot de passe -->
+            <div class="mb-8">
+                <label>Nouveau mot de passe</label>
+                <input type="password" name="newPassword" id="newPassword"
+                       placeholder="Laisser vide pour ne pas modifier" />
+            </div>
+
+            <!-- Confirmation du nouveau mot de passe -->
+            <!-- Ce champ n'est pas envoyé au serveur (pas de name) : uniquement pour la vérification JS -->
+            <div class="mb-8">
+                <label>Confirmer le nouveau mot de passe</label>
+                <input type="password" id="confirmPassword"
+                       placeholder="Répétez le nouveau mot de passe" />
+                <!-- Message d'erreur affiché si les mots de passe ne correspondent pas -->
+                <span id="passwordError" style="color:red; display:none;">
+                    Les mots de passe ne correspondent pas.
+                </span>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="actions mt-8">
+                <button class="button" type="submit">Enregistrer</button>
+                <a class="button ghost" href="/">Annuler</a>
+            </div>
+        </form>
+
+        <!-- Vérification JS : bloque la soumission si les mots de passe ne correspondent pas -->
+        <script>
+            // On cible le formulaire par son id pour éviter de sélectionner
+            // le formulaire de déconnexion du header (qui est le 1er form de la page)
+            document.getElementById('editForm').addEventListener('submit', function(e) {
+                var newPassword = document.getElementById('newPassword').value;
+                var confirmPassword = document.getElementById('confirmPassword').value;
+                var errorSpan = document.getElementById('passwordError');
+
+                // On vérifie uniquement si un nouveau mot de passe a été saisi
+                if (newPassword !== '' && newPassword !== confirmPassword) {
+                    e.preventDefault(); // Bloque l'envoi du formulaire
+                    errorSpan.style.display = 'inline'; // Affiche le message d'erreur
+                } else {
+                    errorSpan.style.display = 'none'; // Cache le message si tout est bon
+                }
+            });
+        </script>
+
+        <!-- ===== ZONE DANGEREUSE ===== -->
+        <hr class="mt-8">
+        <div class="mt-8">
+            <h3>Zone dangereuse</h3>
+            <!-- Bouton qui redirige vers la page de confirmation de suppression du compte -->
+            <a class="button danger" href="/account/delete">Supprimer mon compte</a>
+        </div>
+    </div>
+</main>
+
+{{>partials/footer}}

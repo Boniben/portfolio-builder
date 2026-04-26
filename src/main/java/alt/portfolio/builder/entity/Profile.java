@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,7 +35,12 @@ public class Profile {
 	@ManyToOne(optional = false)
 	private User owner;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
-	@OrderBy("order_ DESC")
+	// Template choisi pour l'export PDF — optionnel (null = template par défaut)
+	@ManyToOne(optional = true)
+	private Template template;
+
+	// cascade ALL + orphanRemoval : si le profil est supprimé, toutes ses rubriques le sont aussi
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("order_ ASC")
 	private List<Rubric> rubrics;
 }

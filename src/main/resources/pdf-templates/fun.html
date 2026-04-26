@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        /* ===== TEMPLATE FUN : coloré, dynamique, pour se démarquer ===== */
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            background: white;
+            color: #222;
+        }
+
+        /* ---- Bandeau supérieur dégradé ---- */
+        .header {
+            background: #ff6b6b;
+            color: white;
+            padding: 28px 32px 20px 32px;
+        }
+        .header h1 {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        .header .desc {
+            font-size: 11px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        /* ---- Bande décorative sous le header ---- */
+        .rainbow {
+            height: 6px;
+            background: linear-gradient(to right, #ff6b6b, #ffd93d, #6bcb77, #4d96ff);
+        }
+
+        /* ---- Corps ---- */
+        .body {
+            padding: 20px 32px;
+        }
+
+        /* ---- Chaque rubrique ---- */
+        .rubric {
+            margin-bottom: 20px;
+        }
+
+        /* ---- Titre rubrique avec emoji bullet ---- */
+        .rubric h3 {
+            font-size: 13px;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            padding: 4px 10px;
+            background: #fff0f0;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* ---- Chaque élément : carte arrondie ---- */
+        .item {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border-left: 4px solid #ffd93d;
+        }
+        .item strong {
+            font-size: 12px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 2px;
+            color: #333;
+        }
+        .dates {
+            font-size: 10px;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        .item p {
+            font-size: 10px;
+            color: #555;
+            margin-top: 3px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- En-tête coloré -->
+    <div class="header">
+        <h1>✨ {{ownerName}}</h1>
+        <div class="desc">{{description}}</div>
+    </div>
+
+    <!-- Bande arc-en-ciel décorative -->
+    <div class="rainbow"></div>
+
+    <!-- Corps : rubriques générées par PdfService -->
+    <div class="body">
+        {{rubrics}}
+    </div>
+
+</body>
+</html>

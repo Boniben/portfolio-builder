@@ -16,6 +16,27 @@
             </div>
         </a>
         <nav class="nav">
-            <a href="/">Dashboard</a>
+            <!-- Lien Accueil toujours visible -->
+            <a href="/">Accueil</a>
+
+            <!-- Liens visibles uniquement si l'utilisateur est connecté -->
+            {{#isAuthenticated}}
+            <a href="/profiles">Mes profils</a>
+            <a href="/account/edit">Mon compte</a>
+            <!-- Lien vers le panel d'administration (visible seulement pour les ADMIN) -->
+            {{#isAdmin}}
+            <a href="/users" style="color: #3a7d44; font-weight: bold;">⚙ Administration</a>
+            {{/isAdmin}}
+            <!-- Formulaire POST pour la déconnexion (Spring Security exige POST) -->
+            <form method="post" action="/logout" style="display:inline">
+                <button type="submit" class="button ghost">Se déconnecter</button>
+            </form>
+            {{/isAuthenticated}}
+
+            <!-- Liens visibles uniquement si l'utilisateur n'est PAS connecté -->
+            {{^isAuthenticated}}
+            <a href="/login">Se connecter</a>
+            <a href="/users/create">Créer un compte</a>
+            {{/isAuthenticated}}
         </nav>
     </header>

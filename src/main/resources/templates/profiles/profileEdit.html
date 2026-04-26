@@ -5,11 +5,14 @@
         <h2>Éditer le profil</h2>
 
         <form method="post" action="/profiles/{{profile.id}}/edit" class="mt-8">
+
+            <!-- Nom du profil -->
             <div class="mb-8">
-                <label>Nom</label>
+                <label>Nom du profil</label>
                 <input type="text" name="name" value="{{profile.name}}">
             </div>
 
+            <!-- Description / accroche du CV -->
             <div class="mb-8">
                 <label>Description</label>
                 <textarea name="description">{{profile.description}}</textarea>

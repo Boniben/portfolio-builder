@@ -36,8 +36,9 @@ public class SecurityConfig {
 						// ✅ ADMIN seulement
 						.requestMatchers(PathPatternRequestMatcher.withDefaults().matcher("/users/**")).hasRole("ADMIN")
 
-						// ✅ USER + ADMIN
-						.requestMatchers(PathPatternRequestMatcher.withDefaults().matcher("/profiles/**"))
+						// ✅ USER + ADMIN : profils et gestion du compte personnel
+						.requestMatchers(PathPatternRequestMatcher.withDefaults().matcher("/profiles/**"),
+								PathPatternRequestMatcher.withDefaults().matcher("/account/**"))
 						.hasAnyRole("USER", "ADMIN")
 
 						// ✅ le reste : connecté

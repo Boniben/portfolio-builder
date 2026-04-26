@@ -2,35 +2,67 @@
 
 <main class="container">
     <div class="card">
-        <h2>Détail utilisateur</h2>
+        <h2>Fiche utilisateur</h2>
 
         {{#showUser}}
+
+        <!-- Informations personnelles -->
         <div class="mt-8">
-            <div class="small"><strong>Prénom :</strong> {{firstname}}</div>
-            <div class="small"><strong>Nom :</strong> {{lastname}}</div>
-            <div class="small"><strong>Login :</strong> {{username}}</div>
-            <div class="small"><strong>Email :</strong> {{email}}</div>
-            <div class="small"><strong>Rôle :</strong> {{role}}</div>
+            <div class="profile-field">
+                <div>
+                    <div><strong>Prénom :</strong> {{firstname}}</div>
+                    <div><strong>Nom :</strong> {{lastname}}</div>
+                    <div><strong>Login :</strong> @{{username}}</div>
+                    <div><strong>Email :</strong> {{email}}</div>
+                    <div style="margin-top: 6px;">
+                        <!-- Badge rôle actuel -->
+                        <strong>Rôle :</strong>
+                        <span style="padding: 2px 10px; border-radius: 4px; font-size: 0.8em;
+                                     font-weight: bold; background: #eee; color: #333;">
+                            {{role}}
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- Profils associés à cet utilisateur -->
         <div class="mt-8">
-            <strong>Profiles associés :</strong>
-            <ul>
-                {{#profiles}}
-                <li><a href="/profiles/{{id}}">{{name}}</a></li>
-                {{/profiles}}
-                {{^profiles}}
-                <li>Aucun profil associé</li>
-                {{/profiles}}
-            </ul>
+            <strong>Profils :</strong>
+            {{#profiles}}
+            <div class="card mt-8" style="padding: 8px 12px;">
+                <a href="/profiles/{{id}}">{{name}}</a>
+            </div>
+            {{/profiles}}
+            {{^profiles}}
+            <p class="small" style="color: #888; margin-top: 4px;">Aucun profil créé.</p>
+            {{/profiles}}
         </div>
 
-        <div class="actions mt-8">
-            <a class="button" href="/users/edit/{{id}}">Modifier Utilisateur</a>
-            <a class="button danger" href="/users/delete/{{id}}">Supprimer Utilisateur</a>
-            <a class="button secondary" href="/users/{{id}}/profiles/edit">Modifier les profils associés</a>
-            <a class="button ghost" href="/">Retour au dashboard</a>
+        <!-- Boutons d'action -->
+        <div class="field-actions mt-8">
+
+            <!-- Modifier les infos (prénom, nom, email) -->
+            <a class="button secondary" href="/users/edit/{{id}}">Modifier</a>
+
+            <!-- Basculer le rôle USER ↔ ADMIN (pas de confirmation, action réversible) -->
+            <form method="post" action="/users/{{id}}/toggleRole" style="display:inline">
+                <button class="button secondary" type="submit">
+                    🔁 Changer le rôle
+                </button>
+            </form>
+
+            <!-- Supprimer le compte (avec confirmation) -->
+            <form method="post" action="/users/{{id}}/delete" style="display:inline">
+                <button class="button danger" type="submit"
+                    onclick="return confirm('Supprimer définitivement ce compte et tous ses profils ?')">
+                    Supprimer
+                </button>
+            </form>
+
+            <a class="button ghost" href="/users">← Retour à la liste</a>
         </div>
+
         {{/showUser}}
     </div>
 </main>

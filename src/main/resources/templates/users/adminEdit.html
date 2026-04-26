@@ -1,0 +1,42 @@
+{{>partials/header}}
+
+<main class="container">
+    <div class="card">
+        <h2>Modifier un utilisateur</h2>
+
+        <!-- L'admin peut modifier prénom, nom et email -->
+        <!-- Le login (username) est non modifiable car c'est l'identifiant de connexion -->
+        <!-- Le mot de passe est non accessible : seul l'utilisateur peut le changer -->
+        <form method="post" action="/users/edit/{{editUser.id}}" class="mt-8">
+
+            <div class="mb-8">
+                <label>Prénom</label>
+                <input type="text" name="firstname" value="{{editUser.firstname}}" required>
+            </div>
+
+            <div class="mb-8">
+                <label>Nom</label>
+                <input type="text" name="lastname" value="{{editUser.lastname}}" required>
+            </div>
+
+            <div class="mb-8">
+                <label>Email</label>
+                <input type="email" name="email" value="{{editUser.email}}" required>
+            </div>
+
+            <!-- Le login est affiché en lecture seule (non modifiable) -->
+            <div class="mb-8">
+                <label>Login (non modifiable)</label>
+                <input type="text" value="{{editUser.username}}" disabled
+                       style="background:#f5f5f5; color:#999;">
+            </div>
+
+            <div class="actions">
+                <button class="button" type="submit">Enregistrer</button>
+                <a class="button ghost" href="/users/show/{{editUser.id}}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+{{>partials/footer}}

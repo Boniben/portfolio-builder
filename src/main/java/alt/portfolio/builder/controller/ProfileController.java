@@ -3,6 +3,7 @@ package alt.portfolio.builder.controller;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import alt.portfolio.builder.entity.Profile;
+import alt.portfolio.builder.entity.Template;
 import alt.portfolio.builder.entity.User;
+import alt.portfolio.builder.repository.TemplateRepository;
 import alt.portfolio.builder.services.ProfileServices;
 
 @Controller
@@ -21,6 +24,10 @@ import alt.portfolio.builder.services.ProfileServices;
 public class ProfileController {
 
 	private final ProfileServices profileServices;
+
+	// Repository pour récupérer la liste des templates disponibles
+	@Autowired
+	private TemplateRepository templateRepository;
 
 	public ProfileController(ProfileServices profileServices) {
 		this.profileServices = profileServices;
@@ -61,14 +68,21 @@ public class ProfileController {
 	}
 
 	// Récupération de l'id depuis l'URL (/profiles/{id}),
-	// récupération du profil correspondant via le service, puis affichage du détail
-	// (profiles/profileShow)
+	// récupération du profil correspondant via le service + liste des templates disponibles,
+	// puis affichage du détail (profiles/profileShow)
 	@GetMapping("/{id}")
 	public String showProfile(@PathVariable UUID id, Model model) {
 
 		Profile profile = profileServices.findById(id);
+		List<Template> templates = templateRepository.findAll();
 
 		model.addAttribute("profile", profile);
+		// Liste des templates pour les boutons radio de sélection du template PDF
+		model.addAttribute("templates", templates);
+		// Id du template actuellement sélectionné (pour pré-cocher le bon bouton radio en JS)
+		model.addAttribute("currentTemplateId",
+				profile.getTemplate() != null ? profile.getTemplate().getId().toString() : "");
+
 		return "profiles/profileShow";
 	}
 
@@ -84,26 +98,34 @@ public class ProfileController {
 	}
 
 	// Récupération de l'id depuis l'URL (/profiles/{id}/edit),
-	// récupération du profil correspondant, pré-remplissage du formulaire, puis
-	// affichage de la vue (profiles/profileEdit)
+	// récupération du profil correspondant + liste des templates disponibles,
+	// pré-remplissage du formulaire, puis affichage de la vue (profiles/profileEdit)
 	@GetMapping("/{id}/edit")
 	public String editProfileForm(@PathVariable UUID id, Model model) {
 		Profile profile = profileServices.findById(id);
+		List<Template> templates = templateRepository.findAll();
+
 		model.addAttribute("profile", profile);
+		// Liste des templates injectée dans la vue pour la liste déroulante
+		model.addAttribute("templates", templates);
 		return "profiles/profileEdit";
 	}
 
 	// Récupération de l'id depuis l'URL (/profiles/{id}/edit) + récupération des
-	// champs modifiés (name + description)
+	// champs modifiés (name, description, templateId optionnel)
 	// + récupération de l'utilisateur connecté,
 	// mise à jour du profil si le profil appartient à l'utilisateur, puis
 	// redirection vers /profiles/{id}
 	@PostMapping("/{id}/edit")
-	public String updateProfile(@PathVariable UUID id, @RequestParam("name") String name,
-			@RequestParam("description") String description, Authentication authentication) {
+	public String updateProfile(@PathVariable UUID id,
+			@RequestParam("name") String name,
+			@RequestParam("description") String description,
+			@RequestParam(value = "templateId", required = false) UUID templateId,
+			Authentication authentication) {
 
 		User user = (User) authentication.getPrincipal();
-		profileServices.editProfile(id, name, description, user.getId());
+		// templateId peut être null si "Aucun (classique par défaut)" est sélectionné
+		profileServices.editProfile(id, name, description, user.getId(), templateId);
 
 		return "redirect:/profiles/" + id;
 	}

@@ -1,6 +1,8 @@
 package alt.portfolio.builder.services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +73,20 @@ public class ItemService {
     // Supprime un élément par son identifiant
     public void delete(UUID id) {
         itemRepository.deleteById(id);
+    }
+
+    /* ================= RÉORDONNER ================= */
+
+    // Met à jour l'ordre des éléments selon la liste d'IDs reçue
+    // L'index dans la liste = le nouvel sortOrder de chaque élément
+    public void reorder(List<UUID> orderedIds) {
+        List<Item> toSave = new ArrayList<>();
+        for (int i = 0; i < orderedIds.size(); i++) {
+            Item item = findById(orderedIds.get(i));
+            item.setSortOrder(i + 1); // sortOrder commence à 1
+            toSave.add(item);
+        }
+        itemRepository.saveAll(toSave);
     }
 
 }

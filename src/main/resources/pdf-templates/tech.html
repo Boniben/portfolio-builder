@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        /* ===== TEMPLATE INFORMATIQUE : style terminal sombre, profil IT ===== */
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "DejaVu Sans Mono", "Courier New", monospace;
+            font-size: 11px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        /* ---- En-tête façon terminal ---- */
+        .header {
+            background: #252526;
+            border-bottom: 2px solid #007acc;
+            padding: 20px 28px;
+        }
+
+        /* ---- Barre de titre façon IDE (onglet) ---- */
+        .tab-bar {
+            background: #2d2d2d;
+            padding: 6px 28px;
+            font-size: 10px;
+            color: #888;
+            border-bottom: 1px solid #3c3c3c;
+        }
+        .tab-bar span {
+            color: #d4d4d4;
+            background: #1e1e1e;
+            padding: 4px 12px;
+            border-top: 2px solid #007acc;
+        }
+
+        /* ---- Prompt terminal avant le nom ---- */
+        .prompt {
+            color: #569cd6;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+        .header h1 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4ec9b0;
+            margin-bottom: 6px;
+        }
+        .header .desc {
+            font-size: 10px;
+            color: #9cdcfe;
+            line-height: 1.6;
+        }
+
+        /* ---- Corps principal ---- */
+        .body {
+            padding: 16px 28px;
+        }
+
+        /* ---- Chaque rubrique ---- */
+        .rubric {
+            margin-bottom: 18px;
+        }
+
+        /* ---- Titre rubrique façon commentaire de code ---- */
+        .rubric h3 {
+            font-size: 11px;
+            color: #6a9955;
+            margin-bottom: 8px;
+            font-weight: normal;
+        }
+        .rubric h3::before {
+            content: "// ";
+        }
+
+        /* ---- Chaque élément ---- */
+        .item {
+            background: #252526;
+            border: 1px solid #3c3c3c;
+            border-left: 3px solid #007acc;
+            padding: 7px 10px;
+            margin-bottom: 6px;
+        }
+        .item strong {
+            color: #dcdcaa;
+            font-size: 11px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .dates {
+            font-size: 10px;
+            color: #569cd6;
+        }
+        .dates::before { content: "@ "; }
+        .item p {
+            font-size: 10px;
+            color: #9cdcfe;
+            margin-top: 3px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barre d'onglet façon IDE -->
+    <div class="tab-bar">
+        <span>cv.json</span>
+    </div>
+
+    <!-- En-tête façon terminal -->
+    <div class="header">
+        <div class="prompt">&gt; user.profile</div>
+        <h1>{{ownerName}}</h1>
+        <div class="desc">// {{description}}</div>
+    </div>
+
+    <!-- Corps : rubriques générées par PdfService -->
+    <div class="body">
+        {{rubrics}}
+    </div>
+
+</body>
+</html>

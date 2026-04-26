@@ -53,6 +53,38 @@ public class UserServices {
 			throw new EntityNotFoundException("Utilisateur introuvable avec l'id : " + id);
 		}
 		userRepository.deleteById(id);
+	}
 
+	// Met à jour les informations personnelles d'un utilisateur
+	// Le username n'est pas modifiable (identifiant de connexion)
+	public User updateUser(UUID id, String firstname, String lastname, String email) {
+		User user = findById(id);
+		user.setFirstname(firstname);
+		user.setLastname(lastname);
+		user.setEmail(email);
+		return userRepository.save(user);
+	}
+
+	// Vérifie que le mot de passe brut correspond au mot de passe encodé en base
+	// Utilisé pour confirmer la suppression de compte et le changement de mot de passe
+	public boolean checkPassword(User user, String rawPassword) {
+		return passwordEncoder.matches(rawPassword, user.getPassword());
+	}
+
+	// Change le mot de passe d'un utilisateur après vérification de l'ancien
+	// Encode le nouveau mot de passe avant de le sauvegarder
+	public void changePassword(UUID id, String newPassword) {
+		User user = findById(id);
+		user.setPassword(passwordEncoder.encode(newPassword));
+		userRepository.save(user);
+	}
+
+	// Bascule le rôle d'un utilisateur entre USER et ADMIN
+	// Appelé depuis le panel admin pour promouvoir ou rétrograder un compte
+	public void toggleRole(UUID id) {
+		User user = findById(id);
+		String newRole = user.getRole().equals("ADMIN") ? "USER" : "ADMIN";
+		user.setRole(newRole);
+		userRepository.save(user);
 	}
 }

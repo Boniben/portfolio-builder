@@ -1,0 +1,40 @@
+{{>partials/header}}
+
+<main class="container">
+    <div class="card">
+        <h2>Supprimer mon compte</h2>
+
+        <!-- Avertissement avant suppression -->
+        <p class="mt-8">
+            ⚠️ Cette action est <strong>irréversible</strong>.
+            Tous vos profils et rubriques seront supprimés définitivement.
+        </p>
+
+        <!-- Message d'erreur si le mot de passe est incorrect -->
+        {{#error}}
+        <p class="mt-8" style="color: red;">{{error}}</p>
+        {{/error}}
+
+        <!-- Formulaire de confirmation : saisie du mot de passe -->
+        <form method="post" action="/account/delete" class="mt-8">
+
+            <!-- Champ mot de passe pour confirmer l'identité -->
+            <div class="mb-8">
+                <label>Confirmez votre mot de passe</label>
+                <input type="password" name="password" placeholder="Votre mot de passe actuel" required />
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="actions">
+                <!-- Bouton de suppression avec confirmation JavaScript -->
+                <button class="button danger" type="submit"
+                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer définitivement votre compte ?')">
+                    Supprimer mon compte
+                </button>
+                <a class="button ghost" href="/">Annuler</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+{{>partials/footer}}

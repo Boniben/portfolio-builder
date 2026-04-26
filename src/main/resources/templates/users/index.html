@@ -1,39 +1,64 @@
 {{>partials/header}}
 
-<h2>Liste des utilisateurs</h2>
+<main class="container">
+    <div class="card">
 
-<div class="actions mb-8">
-  <a class="button" href="/users/create">Ajouter un nouvel utilisateur</a>
-</div>
+        <!-- En-tête du panel admin -->
+        <div class="profile-field">
+            <h2>👤 Panel Administration</h2>
+            <a class="button" href="/users/create">+ Créer un utilisateur</a>
+        </div>
 
-<form method="post" action="/users/delete">
+        <p class="small mt-8" style="color: #888;">
+            Liste de tous les comptes enregistrés sur la plateforme.
+        </p>
 
-  <ol>
-    {{#users}}
-      <li>
-        <input type="checkbox" name="selected" value="{{id}}">
-        <a href="/users/show/{{id}}">
-          {{firstname}} {{lastname}} {{username}} {{email}}
-        </a>
-      </li>
-    {{/users}}
-  </ol>
+        <!-- ===== CARTE PAR UTILISATEUR ===== -->
+        {{#users}}
+        <div class="card mt-8" style="border-left: 4px solid #3a7d44;">
+            <div class="profile-field">
+                <div>
+                    <!-- Nom, login et email -->
+                    <strong>{{firstname}} {{lastname}}</strong>
+                    <small style="margin-left: 8px; color: #888;">@{{username}}</small>
 
-  {{^users}}
-    <div>Aucun utilisateur à afficher</div>
-  {{/users}}
+                    <!-- Badge rôle (texte brut : USER ou ADMIN) -->
+                    <span style="margin-left: 8px; padding: 2px 8px; border-radius: 4px;
+                                 font-size: 0.75em; font-weight: bold;
+                                 background: #eee; color: #333;">
+                        {{role}}
+                    </span>
 
-  <!-- ✅ Le bouton doit être dans le form -->
-  <div class="mt-8">
-    <button type="submit" class="button danger">
-      Supprimer les utilisateurs sélectionnés
-    </button>
-  </div>
+                    <div class="small" style="color: #888; margin-top: 4px;">{{email}}</div>
+                </div>
 
-</form>
+                <!-- Boutons d'action -->
+                <div class="field-actions">
+                    <!-- Voir la fiche complète -->
+                    <a class="button secondary" href="/users/show/{{id}}">Voir</a>
 
-<div class="mt-8">
-  <a class="button ghost" href="/">← Retour au dashboard</a>
-</div>
+                    <!-- Supprimer avec confirmation -->
+                    <form method="post" action="/users/{{id}}/delete" style="display:inline">
+                        <button class="button danger" type="submit"
+                            onclick="return confirm('Supprimer le compte de {{firstname}} {{lastname}} et tous ses profils ?')">
+                            Supprimer
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/users}}
+
+        <!-- Message si aucun utilisateur en base -->
+        {{^users}}
+        <p class="mt-8">Aucun utilisateur enregistré.</p>
+        {{/users}}
+
+    </div>
+
+    <div class="mt-8">
+        <a class="button ghost" href="/">← Retour à l'accueil</a>
+    </div>
+</main>
 
 {{>partials/footer}}

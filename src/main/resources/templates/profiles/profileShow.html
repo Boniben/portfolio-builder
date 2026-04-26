@@ -1,6 +1,8 @@
 {{>partials/header}}
 
 <main class="container">
+
+    <!-- ===== EN-TÊTE DU PROFIL ===== -->
     <div class="card">
         <h2>Profil</h2>
 
@@ -8,33 +10,113 @@
         <div class="profile-field mt-8">
             <h3 class="profile-title">{{profile.name}}</h3>
             <div class="field-actions">
-                <a class="button secondary" href="/profiles/{{profile.id}}/edit">Éditer</a>
+                <a class="button secondary" href="/profiles/{{profile.id}}/edit">Éditer le profil</a>
             </div>
         </div>
 
-        <!-- Description du profil avec bouton d'édition -->
+        <!-- Description du profil -->
         <div class="profile-field">
             <p class="profile-desc">{{profile.description}}</p>
-            <div class="field-actions mt-8">
-                <a class="button secondary" href="/profiles/{{profile.id}}/edit">Éditer</a>
+        </div>
+
+        <!-- ===== EXPORT PDF : sélection du template + boutons ===== -->
+        <div class="mt-8" id="pdf-section">
+
+            <p style="font-weight: bold; margin-bottom: 8px;">Choisir un template PDF :</p>
+
+            <!-- Un bouton radio par template disponible en base (vient de la DB) -->
+            {{#templates}}
+            <label style="display:block; margin: 6px 0; cursor:pointer;">
+                <input type="radio" name="templateId" value="{{id}}" id="tpl-{{id}}">
+                <strong>{{name}}</strong> <small style="color:#888;">— {{description}}</small>
+            </label>
+            {{/templates}}
+
+            <!-- Boutons d'action -->
+            <div class="mt-8" style="display:flex; gap:8px;">
+                <!-- Télécharge le PDF (attachment) -->
+                <button class="button" onclick="exportPdf(false)">⬇ Télécharger le PDF</button>
+                <!-- Ouvre le PDF dans un nouvel onglet (inline) -->
+                <button class="button secondary" onclick="exportPdf(true)">👁 Prévisualiser</button>
             </div>
         </div>
 
-        <!-- ===== SECTION RUBRIQUES ===== -->
-        <div class="mt-8">
-            <h3>Rubriques</h3>
+        <script>
+            // Pré-coche le template actuellement enregistré sur le profil
+            var currentTemplateId = "{{currentTemplateId}}";
+            if (currentTemplateId) {
+                var radio = document.getElementById("tpl-" + currentTemplateId);
+                if (radio) radio.checked = true;
+            } else {
+                // Aucun template enregistré → coche le premier par défaut
+                var first = document.querySelector('#pdf-section input[type="radio"]');
+                if (first) first.checked = true;
+            }
 
-            <!-- Bouton pour ajouter une nouvelle rubrique à ce profil -->
+            // Construit l'URL avec le templateId sélectionné et lance l'export
+            // preview=true  → ouvre dans un nouvel onglet (Content-Disposition: inline)
+            // preview=false → télécharge le fichier (Content-Disposition: attachment)
+            function exportPdf(preview) {
+                var selected = document.querySelector('#pdf-section input[name="templateId"]:checked');
+                var templateId = selected ? selected.value : '';
+                var url = '/profiles/{{profile.id}}/export/pdf?preview=' + preview;
+                if (templateId) url += '&templateId=' + templateId;
+
+                if (preview) {
+                    // Prévisualisation : ouvre dans un nouvel onglet
+                    window.open(url, '_blank');
+                } else {
+                    // Téléchargement : navigue vers l'URL (le navigateur déclenche le download)
+                    window.location.href = url;
+                }
+            }
+        </script>
+    </div>
+
+    <!-- ===== SECTION RUBRIQUES ===== -->
+    <div class="mt-8">
+
+        <!-- En-tête de la section rubriques -->
+        <div class="profile-field">
+            <h3>Rubriques</h3>
             <a class="button" href="/profiles/{{profile.id}}/rubrics/create">+ Ajouter une rubrique</a>
+        </div>
+
+        <!-- Indication glisser-déposer — affichée une seule fois au-dessus des rubriques -->
+        <p class="small mt-8" style="color: #888;">
+            ↕ Faites glisser les rubriques pour les réordonner
+        </p>
+
+        <!-- Conteneur des rubriques — SortableJS s'applique sur cet élément -->
+        <div id="rubrics-container">
 
             <!-- Boucle sur toutes les rubriques du profil -->
             {{#profile.rubrics}}
-            <div class="card mt-8">
+            <!-- La bordure est verte si visible, grise si cachée -->
+            <div class="card mt-8" data-rubric-id="{{id}}"
+                 style="border-left: 4px solid {{#visible}}#3a7d44{{/visible}}{{^visible}}#aaa{{/visible}}; cursor: grab; {{^visible}}opacity: 0.6;{{/visible}}">
 
                 <!-- En-tête de la rubrique : nom, catégorie et boutons -->
                 <div class="profile-field">
-                    <h4>{{name}} <small>({{category.name}})</small></h4>
+                    <div>
+                        <!-- Icône de déplacement + nom + catégorie -->
+                        <span style="margin-right: 8px; color: #888;">☰</span>
+                        <h4 style="display:inline">{{name}}</h4>
+                        <small style="margin-left: 8px; color: #888;">({{category.name}})</small>
+                        <!-- Badge "Caché" affiché quand la rubrique est invisible dans le CV -->
+                        {{^visible}}<span style="margin-left:8px; background:#aaa; color:white; border-radius:4px; padding:2px 6px; font-size:0.75em;">Caché du CV</span>{{/visible}}
+                    </div>
                     <div class="field-actions">
+                        <!-- Bouton masquer/afficher dans le CV -->
+                        <form method="post" action="/rubrics/{{id}}/toggle" style="display:inline">
+                            {{#visible}}
+                            <button class="button secondary" type="submit">👁 Masquer</button>
+                            {{/visible}}
+                            {{^visible}}
+                            <button class="button secondary" type="submit">👁 Afficher</button>
+                            {{/visible}}
+                        </form>
+
                         <!-- Bouton modifier la rubrique -->
                         <a class="button secondary" href="/rubrics/{{id}}/edit">Modifier</a>
 
@@ -48,37 +130,49 @@
                     </div>
                 </div>
 
-                <!-- Boucle sur les éléments de cette rubrique -->
-                {{#items}}
-                <div class="profile-field">
-                    <div>
-                        <!-- Titre de l'élément -->
-                        <strong>{{title}}</strong>
+                <!-- Indication glisser-déposer pour les éléments -->
+                <p class="small" style="color: #888; margin: 4px 0 0 0;">
+                    ↕ Faites glisser les éléments pour les réordonner
+                </p>
 
-                        <!-- Dates (affichées seulement si elles existent) -->
-                        {{#startDate}}<span> | Du {{startDate}}</span>{{/startDate}}
-                        {{#endDate}}<span> au {{endDate}}</span>{{/endDate}}
+                <!-- Conteneur des éléments — SortableJS s'applique ici aussi -->
+                <div class="items-container" data-rubric-id="{{id}}">
 
-                        <!-- Description de l'élément -->
-                        <p>{{description}}</p>
+                    <!-- Boucle sur les éléments de cette rubrique -->
+                    {{#items}}
+                    <div class="profile-field mt-8" data-item-id="{{id}}"
+                         style="background: #f9f9f9; border-radius: 6px; padding: 8px; cursor: grab;">
+                        <div>
+                            <!-- Icône déplacement + titre -->
+                            <span style="margin-right: 6px; color: #888;">☰</span>
+                            <strong>{{title}}</strong>
+
+                            <!-- Dates (affichées seulement si elles existent) -->
+                            {{#startDate}}<span style="color:#888;"> | Du {{startDate}}</span>{{/startDate}}
+                            {{#endDate}}<span style="color:#888;"> au {{endDate}}</span>{{/endDate}}
+
+                            <!-- Description de l'élément -->
+                            <p>{{description}}</p>
+                        </div>
+                        <div class="field-actions">
+                            <!-- Bouton modifier l'élément -->
+                            <a class="button secondary" href="/items/{{id}}/edit">Modifier</a>
+
+                            <!-- Bouton supprimer l'élément (avec confirmation) -->
+                            <form method="post" action="/items/{{id}}/delete" style="display:inline">
+                                <button class="button danger" type="submit"
+                                    onclick="return confirm('Supprimer cet élément ?')">
+                                    Supprimer
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="field-actions">
-                        <!-- Bouton modifier l'élément -->
-                        <a class="button secondary" href="/items/{{id}}/edit">Modifier</a>
+                    {{/items}}
 
-                        <!-- Bouton supprimer l'élément (avec confirmation) -->
-                        <form method="post" action="/items/{{id}}/delete" style="display:inline">
-                            <button class="button danger" type="submit"
-                                onclick="return confirm('Supprimer cet élément ?')">
-                                Supprimer
-                            </button>
-                        </form>
-                    </div>
                 </div>
-                {{/items}}
+                <!-- fin items-container -->
 
                 <!-- Bouton pour ajouter un élément dans cette rubrique -->
-                <!-- Note : {{id}} ici = id de la rubrique (on est hors de la boucle items) -->
                 <div class="mt-8">
                     <a class="button ghost" href="/rubrics/{{id}}/items/create">+ Ajouter un élément</a>
                 </div>
@@ -86,17 +180,83 @@
             </div>
             {{/profile.rubrics}}
 
-            <!-- Message affiché si le profil n'a aucune rubrique -->
-            {{^profile.rubrics}}
-            <p class="mt-8">Aucune rubrique pour l'instant. Commencez par en ajouter une !</p>
-            {{/profile.rubrics}}
         </div>
+        <!-- fin rubrics-container -->
 
-        <!-- Bouton retour vers la liste des profils -->
-        <div class="mt-8">
-            <a class="button ghost" href="/profiles">← Retour</a>
-        </div>
+        <!-- Message affiché si le profil n'a aucune rubrique -->
+        {{^profile.rubrics}}
+        <p class="mt-8">Aucune rubrique pour l'instant. Commencez par en ajouter une !</p>
+        {{/profile.rubrics}}
+
     </div>
+
+    <!-- Bouton retour -->
+    <div class="mt-8">
+        <a class="button ghost" href="/profiles">← Retour</a>
+    </div>
+
 </main>
+
+<!-- ===== SORTABLEJS (glisser-déposer) ===== -->
+<!-- Chargé depuis un CDN : pas d'installation nécessaire -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+
+<script>
+    // ---- GLISSER-DÉPOSER DES RUBRIQUES ----
+
+    var rubricsContainer = document.getElementById('rubrics-container');
+
+    if (rubricsContainer) {
+        Sortable.create(rubricsContainer, {
+            animation: 150,              // Durée de l'animation en ms
+            handle: 'h4',               // On peut glisser depuis le titre h4
+            ghostClass: 'sortable-ghost', // Classe CSS appliquée à l'élément fantôme
+
+            // Appelé automatiquement après chaque dépôt d'une rubrique
+            onEnd: function() {
+                // Lecture du nouvel ordre : on récupère les data-rubric-id dans l'ordre du DOM
+                var ids = [];
+                rubricsContainer.querySelectorAll('[data-rubric-id]').forEach(function(el) {
+                    ids.push(el.getAttribute('data-rubric-id'));
+                });
+
+                // Envoi de l'ordre au serveur via une requête POST asynchrone
+                fetch('/profiles/{{profile.id}}/rubrics/reorder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: ids.join(',')
+                });
+            }
+        });
+    }
+
+    // ---- GLISSER-DÉPOSER DES ÉLÉMENTS (dans chaque rubrique) ----
+
+    // On applique SortableJS sur chaque conteneur d'éléments
+    document.querySelectorAll('.items-container').forEach(function(container) {
+        var rubricId = container.getAttribute('data-rubric-id');
+
+        Sortable.create(container, {
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+
+            // Appelé automatiquement après chaque dépôt d'un élément
+            onEnd: function() {
+                // Lecture du nouvel ordre des éléments dans cette rubrique
+                var ids = [];
+                container.querySelectorAll('[data-item-id]').forEach(function(el) {
+                    ids.push(el.getAttribute('data-item-id'));
+                });
+
+                // Envoi de l'ordre au serveur
+                fetch('/rubrics/' + rubricId + '/items/reorder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: ids.join(',')
+                });
+            }
+        });
+    });
+</script>
 
 {{>partials/footer}}

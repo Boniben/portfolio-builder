@@ -1,14 +1,20 @@
 package alt.portfolio.builder.controller;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import alt.portfolio.builder.entity.Item;
 import alt.portfolio.builder.entity.Rubric;
@@ -103,6 +109,27 @@ public class ItemController {
         itemService.delete(id);
 
         return "redirect:/profiles/" + profileId;
+    }
+
+    /* ================= RÉORDONNER ================= */
+
+    // Reçoit la nouvelle liste ordonnée d'IDs d'éléments depuis le frontend (JavaScript)
+    // URL : POST /rubrics/{rubricId}/items/reorder
+    // Le corps de la requête est une chaîne d'IDs séparés par des virgules
+    @PostMapping("/rubrics/{rubricId}/items/reorder")
+    @ResponseBody
+    public ResponseEntity<String> reorderItems(@PathVariable UUID rubricId,
+                                                @RequestBody String body) {
+        // Conversion de la chaîne "id1,id2,id3" en liste de UUID
+        List<UUID> orderedIds = Arrays.stream(body.split(","))
+                .map(String::trim)
+                .map(UUID::fromString)
+                .collect(Collectors.toList());
+
+        itemService.reorder(orderedIds);
+
+        // Retourne 200 OK au JavaScript qui a fait la requête
+        return ResponseEntity.ok("OK");
     }
 
 }

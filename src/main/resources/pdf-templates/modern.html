@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        /* ===== TEMPLATE MODERNE : barre latérale verte, design 2 colonnes ===== */
+        /* Utilise une table pour la mise en page (flexbox non supporté en PDF) */
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "DejaVu Sans", Arial, sans-serif;
+            font-size: 11px;
+            background: white;
+        }
+
+        /* ---- Table principale : sidebar gauche + contenu droit ---- */
+        .layout {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* ---- Colonne gauche : sidebar verte ---- */
+        .sidebar {
+            width: 32%;
+            background-color: #2d6a4f;
+            color: white;
+            padding: 30px 18px;
+            vertical-align: top;
+        }
+        .sidebar h1 {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.3;
+            margin-bottom: 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.4);
+            padding-bottom: 10px;
+        }
+        .sidebar .desc {
+            font-size: 10px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.6;
+        }
+
+        /* ---- Colonne droite : contenu principal ---- */
+        .main {
+            width: 68%;
+            padding: 24px 28px;
+            vertical-align: top;
+            background: white;
+        }
+
+        /* ---- Chaque rubrique ---- */
+        .rubric {
+            margin-bottom: 20px;
+        }
+        .rubric h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #2d6a4f;
+            border-bottom: 2px solid #2d6a4f;
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+        }
+
+        /* ---- Chaque élément ---- */
+        .item {
+            margin-bottom: 10px;
+            padding: 6px 8px;
+            background-color: #f8f9f8;
+            border-left: 3px solid #2d6a4f;
+        }
+        .item strong {
+            font-size: 11px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 2px;
+            color: #1a1a1a;
+        }
+        .dates {
+            font-size: 10px;
+            color: #2d6a4f;
+            font-weight: bold;
+        }
+        .item p {
+            font-size: 10px;
+            color: #555;
+            margin-top: 3px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mise en page 2 colonnes via table (compatible PDF) -->
+    <table class="layout">
+        <tr>
+            <!-- Sidebar gauche verte : nom + description -->
+            <td class="sidebar">
+                <h1>{{ownerName}}</h1>
+                <div class="desc">{{description}}</div>
+            </td>
+
+            <!-- Colonne droite : rubriques générées par PdfService -->
+            <td class="main">
+                {{rubrics}}
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

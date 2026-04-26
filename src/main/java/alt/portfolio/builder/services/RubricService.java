@@ -2,6 +2,7 @@ package alt.portfolio.builder.services;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,6 +69,29 @@ public class RubricService {
     // Supprime une rubrique par son identifiant
     public void delete(UUID id) {
         rubricRepository.deleteById(id);
+    }
+
+    /* ================= VISIBILITÉ ================= */
+
+    // Bascule la visibilité d'une rubrique (visible → caché, caché → visible)
+    public void toggleVisible(UUID id) {
+        Rubric rubric = findById(id);
+        rubric.setVisible(!rubric.isVisible());
+        rubricRepository.save(rubric);
+    }
+
+    /* ================= RÉORDONNER ================= */
+
+    // Met à jour l'ordre des rubriques selon la liste d'IDs reçue
+    // L'index dans la liste = le nouvel order_ de chaque rubrique
+    public void reorder(List<UUID> orderedIds) {
+        List<Rubric> toSave = new ArrayList<>();
+        for (int i = 0; i < orderedIds.size(); i++) {
+            Rubric rubric = findById(orderedIds.get(i));
+            rubric.setOrder_(i + 1); // order_ commence à 1
+            toSave.add(rubric);
+        }
+        rubricRepository.saveAll(toSave);
     }
 
 }
