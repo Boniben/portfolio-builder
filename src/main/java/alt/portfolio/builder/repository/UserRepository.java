@@ -14,8 +14,10 @@ import alt.portfolio.builder.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-	// Recherche un utilisateur par son username
-
+	// Recherche un utilisateur par son username (login)
 	public Optional<User> findByUsername(String username);
+
+	// Recherche un utilisateur par son email
+	public Optional<User> findByEmail(String email);
 
 }

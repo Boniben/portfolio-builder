@@ -24,11 +24,20 @@ public class DbUserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder pEncoder;
  
-    // Méthode requise par UserDetailsService pour récupérer un utilisateur par username
+    // Méthode requise par UserDetailsService pour récupérer un utilisateur
+    // Essaie d'abord par login (username), puis par email si rien trouvé
+    // Cela permet de se connecter avec l'un ou l'autre
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optUser = uRepo.findByUsername(username);
-        return optUser.orElseThrow(() -> new UsernameNotFoundException("Utilisateur inconnu"));
+    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
+        // Tentative 1 : recherche par login
+        Optional<User> optUser = uRepo.findByUsername(usernameOrEmail);
+
+        // Tentative 2 : si non trouvé par login, on cherche par email
+        if (optUser.isEmpty()) {
+            optUser = uRepo.findByEmail(usernameOrEmail);
+        }
+
+        return optUser.orElseThrow(() -> new UsernameNotFoundException("Utilisateur inconnu : " + usernameOrEmail));
     }
  
     // Encode le mot de passe d'un utilisateur et le met à jour dans l'objet
