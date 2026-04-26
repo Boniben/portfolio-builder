@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -23,25 +22,19 @@ public class SecurityConfig {
 
 				.authorizeHttpRequests(req -> req
 
-						// ✅ Public
-						.requestMatchers(PathPatternRequestMatcher.withDefaults().matcher("/"),
-								PathPatternRequestMatcher.withDefaults().matcher("/login"),
-								PathPatternRequestMatcher.withDefaults().matcher("/css/**"),
-								PathPatternRequestMatcher.withDefaults().matcher("/js/**"),
-								PathPatternRequestMatcher.withDefaults().matcher("/img/**"),
-								PathPatternRequestMatcher.withDefaults().matcher("/users/create"),
-								PathPatternRequestMatcher.withDefaults().matcher("/users/create/**"),
-								PathPatternRequestMatcher.withDefaults().matcher("/users/register"),
-								PathPatternRequestMatcher.withDefaults().matcher("/users/register/**"))
+						// ✅ Pages publiques (accessibles sans connexion)
+						.requestMatchers(
+								"/", "/login",
+								"/css/**", "/js/**", "/img/**",
+								"/users/create", "/users/create/**",
+								"/users/register", "/users/register/**")
 						.permitAll()
 
 						// ✅ ADMIN seulement
-						.requestMatchers(PathPatternRequestMatcher.withDefaults().matcher("/users/**")).hasRole("ADMIN")
+						.requestMatchers("/users/**").hasRole("ADMIN")
 
 						// ✅ USER + ADMIN : profils et gestion du compte personnel
-						.requestMatchers(PathPatternRequestMatcher.withDefaults().matcher("/profiles/**"),
-								PathPatternRequestMatcher.withDefaults().matcher("/account/**"))
-						.hasAnyRole("USER", "ADMIN")
+						.requestMatchers("/profiles/**", "/account/**").hasAnyRole("USER", "ADMIN")
 
 						// ✅ le reste : connecté
 						.anyRequest().authenticated())
