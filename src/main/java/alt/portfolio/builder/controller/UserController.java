@@ -78,12 +78,14 @@ public class UserController {
     }
 
     // Enregistre les modifications apportées par l'admin à un utilisateur
+    // address et phone non modifiables ici (l'utilisateur les gère depuis son compte)
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable UUID id,
             @RequestParam("firstname") String firstname,
             @RequestParam("lastname") String lastname,
             @RequestParam("email") String email) {
-        userService.updateUser(id, firstname, lastname, email);
+        // On passe null pour address et phone : l'admin ne les modifie pas
+        userService.updateUser(id, firstname, lastname, email, null, null);
         return "redirect:/users/show/" + id;
     }
 
