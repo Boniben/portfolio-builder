@@ -43,8 +43,10 @@ public class RubricController {
 
     // Affiche le formulaire pour ajouter une rubrique à un profil
     // URL : GET /profiles/{profileId}/rubrics/create
+    // Le paramètre "error" est passé si la validation a échoué lors d'une soumission précédente
     @GetMapping("/profiles/{profileId}/rubrics/create")
-    public String createForm(@PathVariable UUID profileId, Model model) {
+    public String createForm(@PathVariable UUID profileId, Model model,
+                             @RequestParam(value = "error", required = false) String error) {
         // Récupération du profil auquel on ajoute la rubrique
         Profile profile = profileServices.findById(profileId);
 
@@ -53,6 +55,9 @@ public class RubricController {
 
         model.addAttribute("profile", profile);
         model.addAttribute("categories", categories);
+        if (error != null) {
+            model.addAttribute("error", error);
+        }
         return "rubrics/rubricForm";
     }
 
@@ -62,6 +67,12 @@ public class RubricController {
     public String createRubric(@PathVariable UUID profileId,
                                @RequestParam("name") String name,
                                @RequestParam("categoryId") UUID categoryId) {
+
+        // Validation : le nom de la rubrique est obligatoire
+        if (name.isBlank()) {
+            return "redirect:/profiles/" + profileId + "/rubrics/create?error=Le+nom+de+la+rubrique+est+obligatoire.";
+        }
+
         // Récupération du profil et de la catégorie choisie
         Profile profile = profileServices.findById(profileId);
         Category category = categoryRepository.findById(categoryId)
@@ -78,8 +89,10 @@ public class RubricController {
 
     // Affiche le formulaire de modification d'une rubrique
     // URL : GET /rubrics/{id}/edit
+    // Le paramètre "error" est passé si la validation a échoué lors d'une soumission précédente
     @GetMapping("/rubrics/{id}/edit")
-    public String editForm(@PathVariable UUID id, Model model) {
+    public String editForm(@PathVariable UUID id, Model model,
+                           @RequestParam(value = "error", required = false) String error) {
         Rubric rubric = rubricService.findById(id);
         List<Category> categories = categoryRepository.findAll();
 
@@ -87,6 +100,9 @@ public class RubricController {
         model.addAttribute("categories", categories);
         // On passe l'id du profil pour le bouton "Annuler"
         model.addAttribute("profileId", rubric.getProfile().getId());
+        if (error != null) {
+            model.addAttribute("error", error);
+        }
         return "rubrics/rubricEdit";
     }
 
@@ -99,6 +115,11 @@ public class RubricController {
         // On récupère l'id du profil AVANT la mise à jour pour la redirection
         Rubric rubric = rubricService.findById(id);
         UUID profileId = rubric.getProfile().getId();
+
+        // Validation : le nom est obligatoire
+        if (name.isBlank()) {
+            return "redirect:/rubrics/" + id + "/edit?error=Le+nom+de+la+rubrique+est+obligatoire.";
+        }
 
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Catégorie introuvable"));

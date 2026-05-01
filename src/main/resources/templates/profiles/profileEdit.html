@@ -4,6 +4,11 @@
     <div class="card">
         <h2>Éditer le profil</h2>
 
+        <!-- Message d'erreur de validation -->
+        {{#error}}
+        <p class="mt-8" style="color: #e35b4c;">❌ {{error}}</p>
+        {{/error}}
+
         <form method="post" action="/profiles/{{profile.id}}/edit" class="mt-8">
 
             <!-- Nom du profil -->

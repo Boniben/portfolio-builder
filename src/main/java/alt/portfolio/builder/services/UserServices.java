@@ -1,6 +1,7 @@
 package alt.portfolio.builder.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,26 @@ public class UserServices {
 		User user = findById(id);
 		user.setPassword(passwordEncoder.encode(newPassword));
 		userRepository.save(user);
+	}
+
+	// Vérifie si un username est déjà pris en base
+	// Utilisé lors de l'inscription pour éviter les doublons
+	public boolean usernameExists(String username) {
+		return userRepository.findByUsername(username).isPresent();
+	}
+
+	// Vérifie si un email est déjà utilisé (sans exclusion)
+	// Utilisé lors de l'inscription
+	public boolean emailExists(String email) {
+		return userRepository.findByEmail(email).isPresent();
+	}
+
+	// Vérifie si un email est déjà utilisé par un AUTRE utilisateur
+	// excludeId : l'id de l'utilisateur en cours de modification (on ne bloque pas son propre email)
+	// Utilisé lors de la modification du compte
+	public boolean emailExistsForOtherUser(String email, UUID excludeId) {
+		Optional<User> existing = userRepository.findByEmail(email);
+		return existing.isPresent() && !existing.get().getId().equals(excludeId);
 	}
 
 	// Bascule le rôle d'un utilisateur entre USER et ADMIN

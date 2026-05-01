@@ -63,6 +63,38 @@ public class AccountController {
         // Récupération de l'utilisateur connecté (données fraîches depuis la base)
         User currentUser = (User) dbUserService.loadUserByUsername(authentication.getName());
 
+        // ===== VALIDATION DES CHAMPS =====
+
+        // Vérification que les champs obligatoires ne sont pas vides
+        if (firstname.isBlank() || lastname.isBlank() || email.isBlank()) {
+            model.addAttribute("user", currentUser);
+            model.addAttribute("error", "Prénom, nom et email sont obligatoires.");
+            return "account/editForm";
+        }
+
+        // Vérification du format de l'email (doit contenir @ et un point)
+        if (!email.contains("@") || !email.contains(".")) {
+            model.addAttribute("user", currentUser);
+            model.addAttribute("error", "L'adresse email n'est pas valide.");
+            return "account/editForm";
+        }
+
+        // Vérification que l'email n'est pas déjà utilisé par un autre compte
+        if (userServices.emailExistsForOtherUser(email, currentUser.getId())) {
+            model.addAttribute("user", currentUser);
+            model.addAttribute("error", "Cette adresse email est déjà utilisée par un autre compte.");
+            return "account/editForm";
+        }
+
+        // Vérification de la longueur du nouveau mot de passe si l'utilisateur veut en changer
+        if (newPassword != null && !newPassword.isBlank() && newPassword.length() < 6) {
+            model.addAttribute("user", currentUser);
+            model.addAttribute("error", "Le nouveau mot de passe doit faire au moins 6 caractères.");
+            return "account/editForm";
+        }
+
+        // ===== FIN VALIDATION =====
+
         // Mise à jour des infos personnelles (toujours effectuée)
         // address et phone peuvent être vides → on passe null si la chaîne est vide
         userServices.updateUser(currentUser.getId(), firstname, lastname, email,

@@ -51,17 +51,27 @@ public class ProfileController {
 	}
 
 	// Affiche le formulaire de création de profil (profiles/profileForm)
+	// Le paramètre "error" est passé si la validation a échoué lors d'une soumission précédente
 	@GetMapping("/create")
-	public String createForm() {
+	public String createForm(Model model, @RequestParam(value = "error", required = false) String error) {
+		if (error != null) {
+			model.addAttribute("error", error);
+		}
 		return "profiles/profileForm";
 	}
 
 	// Récupération de l'utilisateur connecté + récupération des champs du
 	// formulaire (name + description),
-	// création du profil, puis redirection vers /profiles
+	// validation, création du profil, puis redirection vers /profiles
 	@PostMapping("/create")
 	public String createProfile(Authentication authentication, @RequestParam("name") String name,
 			@RequestParam("description") String description) {
+
+		// Validation : le nom et la description sont obligatoires
+		if (name.isBlank() || description.isBlank()) {
+			return "redirect:/profiles/create?error=Le+nom+et+la+description+sont+obligatoires.";
+		}
+
 		User user = (User) authentication.getPrincipal();
 		profileServices.createProfile(user, name, description);
 		return "redirect:/profiles";
@@ -100,21 +110,26 @@ public class ProfileController {
 	// Récupération de l'id depuis l'URL (/profiles/{id}/edit),
 	// récupération du profil correspondant + liste des templates disponibles,
 	// pré-remplissage du formulaire, puis affichage de la vue (profiles/profileEdit)
+	// Le paramètre "error" est passé si la validation a échoué lors d'une soumission précédente
 	@GetMapping("/{id}/edit")
-	public String editProfileForm(@PathVariable UUID id, Model model) {
+	public String editProfileForm(@PathVariable UUID id, Model model,
+			@RequestParam(value = "error", required = false) String error) {
 		Profile profile = profileServices.findById(id);
 		List<Template> templates = templateRepository.findAll();
 
 		model.addAttribute("profile", profile);
 		// Liste des templates injectée dans la vue pour la liste déroulante
 		model.addAttribute("templates", templates);
+		if (error != null) {
+			model.addAttribute("error", error);
+		}
 		return "profiles/profileEdit";
 	}
 
 	// Récupération de l'id depuis l'URL (/profiles/{id}/edit) + récupération des
 	// champs modifiés (name, description, templateId optionnel)
 	// + récupération de l'utilisateur connecté,
-	// mise à jour du profil si le profil appartient à l'utilisateur, puis
+	// validation, mise à jour du profil si le profil appartient à l'utilisateur, puis
 	// redirection vers /profiles/{id}
 	@PostMapping("/{id}/edit")
 	public String updateProfile(@PathVariable UUID id,
@@ -122,6 +137,11 @@ public class ProfileController {
 			@RequestParam("description") String description,
 			@RequestParam(value = "templateId", required = false) UUID templateId,
 			Authentication authentication) {
+
+		// Validation : le nom et la description sont obligatoires
+		if (name.isBlank() || description.isBlank()) {
+			return "redirect:/profiles/" + id + "/edit?error=Le+nom+et+la+description+sont+obligatoires.";
+		}
 
 		User user = (User) authentication.getPrincipal();
 		// templateId peut être null si "Aucun (classique par défaut)" est sélectionné

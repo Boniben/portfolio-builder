@@ -4,6 +4,11 @@
     <div class="card">
         <h2>Modifier la rubrique</h2>
 
+        <!-- Message d'erreur de validation -->
+        {{#error}}
+        <p class="mt-8" style="color: #e35b4c;">❌ {{error}}</p>
+        {{/error}}
+
         <!-- Formulaire de modification d'une rubrique -->
         <!-- L'action pointe vers la route POST /rubrics/{id}/edit -->
         <form method="post" action="/rubrics/{{rubric.id}}/edit" class="mt-8">
