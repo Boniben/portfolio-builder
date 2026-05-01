@@ -55,6 +55,8 @@ public class AccountController {
                                 @RequestParam("firstname") String firstname,
                                 @RequestParam("lastname") String lastname,
                                 @RequestParam("email") String email,
+                                @RequestParam(value = "address", required = false) String address,
+                                @RequestParam(value = "phone", required = false) String phone,
                                 @RequestParam(value = "currentPassword", required = false) String currentPassword,
                                 @RequestParam(value = "newPassword", required = false) String newPassword,
                                 Model model) {
@@ -62,7 +64,10 @@ public class AccountController {
         User currentUser = (User) dbUserService.loadUserByUsername(authentication.getName());
 
         // Mise à jour des infos personnelles (toujours effectuée)
-        userServices.updateUser(currentUser.getId(), firstname, lastname, email);
+        // address et phone peuvent être vides → on passe null si la chaîne est vide
+        userServices.updateUser(currentUser.getId(), firstname, lastname, email,
+                (address != null && !address.isBlank()) ? address : null,
+                (phone != null && !phone.isBlank()) ? phone : null);
 
         // Changement de mot de passe uniquement si les champs sont remplis
         if (newPassword != null && !newPassword.isEmpty()) {

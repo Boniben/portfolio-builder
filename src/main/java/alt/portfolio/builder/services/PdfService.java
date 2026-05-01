@@ -48,12 +48,17 @@ public class PdfService {
         }
     }
 
-    // Remplace les marqueurs {{ownerName}}, {{description}}, {{rubrics}} dans le template
-    // par les vraies données du profil
+    // Remplace tous les marqueurs du template par les vraies données du profil
+    // Marqueurs : {{ownerName}}, {{description}}, {{email}}, {{phone}}, {{address}}, {{rubrics}}
     private String buildHtml(String template, Profile profile) {
 
         // Nom complet de l'utilisateur propriétaire du profil (affiché comme titre du CV)
         String ownerName = profile.getOwner().getFirstname() + " " + profile.getOwner().getLastname();
+
+        // Informations de contact (peuvent être null si non renseignées)
+        String email   = profile.getOwner().getEmail();
+        String phone   = profile.getOwner().getPhone();    // null si non renseigné
+        String address = profile.getOwner().getAddress();  // null si non renseigné
 
         // Construit le bloc HTML des rubriques (seulement celles qui sont visibles)
         String rubricsHtml = buildRubricsHtml(profile);
@@ -62,6 +67,9 @@ public class PdfService {
         return template
             .replace("{{ownerName}}", escapeHtml(ownerName))
             .replace("{{description}}", escapeHtml(profile.getDescription()))
+            .replace("{{email}}", escapeHtml(email != null ? email : ""))
+            .replace("{{phone}}", escapeHtml(phone != null ? phone : ""))
+            .replace("{{address}}", escapeHtml(address != null ? address : ""))
             .replace("{{rubrics}}", rubricsHtml); // déjà du HTML, pas d'échappement ici
     }
 

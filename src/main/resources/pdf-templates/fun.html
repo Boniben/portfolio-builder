@@ -85,6 +85,18 @@
             margin-top: 3px;
             line-height: 1.5;
         }
+
+        /* ---- Bande de contact colorée ---- */
+        .contact-band {
+            background: #fff0f0;
+            border-bottom: 2px solid #ffd93d;
+            padding: 7px 32px;
+            font-size: 10px;
+            color: #cc3333;
+        }
+        .contact-band span {
+            margin-right: 16px;
+        }
     </style>
 </head>
 <body>
@@ -97,6 +109,13 @@
 
     <!-- Bande arc-en-ciel décorative -->
     <div class="rainbow"></div>
+
+    <!-- Bande de contact -->
+    <div class="contact-band">
+        <span>&#9993; {{email}}</span>
+        <span>&#9743; {{phone}}</span>
+        <span>&#8962; {{address}}</span>
+    </div>
 
     <!-- Corps : rubriques générées par PdfService -->
     <div class="body">

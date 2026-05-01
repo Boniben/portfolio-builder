@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8"/>
     <style>
-        /* ===== TEMPLATE MANUEL : document technique, numéroté, structuré ===== */
+        /* ===== TEMPLATE MANUEL : document technique, structuré ===== */
+        /* openhtmltopdf : pas de counter(), pas de ::before content,
+           pas de padding sur body — on utilise un wrapper .page */
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: "DejaVu Serif", Georgia, serif;
+            font-family: "DejaVu Sans", Arial, sans-serif;
             font-size: 11px;
             background: white;
             color: #1a1a1a;
+        }
+
+        /* Wrapper principal qui remplace le padding body */
+        .page {
             padding: 36px 48px;
         }
 
@@ -53,35 +59,33 @@
             font-family: "DejaVu Sans Mono", monospace;
         }
 
-        /* ---- Compteur automatique pour numéroter les rubriques ---- */
-        .body {
-            counter-reset: section;
+        /* ---- Bloc contact dans la page de garde ---- */
+        .contact-info {
+            font-size: 10px;
+            color: #444;
+            margin-top: 10px;
+            line-height: 1.8;
+            border-top: 1px solid #bbb;
+            padding-top: 8px;
         }
 
         /* ---- Chaque rubrique ---- */
         .rubric {
             margin-bottom: 22px;
-            counter-increment: section;
         }
 
-        /* ---- Titre rubrique numéroté ---- */
+        /* ---- Titre rubrique : double bordure pour l'effet document ---- */
         .rubric h3 {
             font-size: 13px;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: #1a1a1a;
-            padding-bottom: 4px;
+            padding: 4px 8px;
             margin-bottom: 10px;
+            border-top: 2px solid #1a1a1a;
             border-bottom: 1px solid #1a1a1a;
-        }
-        .rubric h3::before {
-            content: counter(section) ". ";
-        }
-
-        /* ---- Compteur pour les éléments ---- */
-        .rubric {
-            counter-reset: item;
+            background: #f5f5f5;
         }
 
         /* ---- Chaque élément ---- */
@@ -90,17 +94,11 @@
             padding: 6px 10px;
             background: #f9f9f9;
             border: 1px solid #e0e0e0;
-            counter-increment: item;
         }
         .item strong {
             font-size: 12px;
             display: block;
             margin-bottom: 2px;
-        }
-        .item strong::before {
-            content: counter(section) "." counter(item) "  ";
-            color: #888;
-            font-size: 10px;
         }
         .dates {
             font-size: 10px;
@@ -116,19 +114,25 @@
     </style>
 </head>
 <body>
+<div class="page">
 
     <!-- Page de garde façon document technique officiel -->
     <div class="cover">
-        <div class="doc-type">Curriculum Vitæ — Document officiel</div>
+        <div class="doc-type">Curriculum Vitae -- Document officiel</div>
         <h1>{{ownerName}}</h1>
         <div class="desc">{{description}}</div>
+        <!-- Bloc informations personnelles -->
+        <div class="contact-info">
+            Email : {{email}} &#160;&#160; Tel : {{phone}} &#160;&#160; Adresse : {{address}}
+        </div>
         <div class="ref">REF : CV-{{ownerName}}</div>
     </div>
 
-    <!-- Corps : rubriques numérotées générées par PdfService -->
+    <!-- Corps : rubriques generees par PdfService -->
     <div class="body">
         {{rubrics}}
     </div>
 
+</div>
 </body>
 </html>

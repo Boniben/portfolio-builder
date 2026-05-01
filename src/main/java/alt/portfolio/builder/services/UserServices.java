@@ -57,11 +57,14 @@ public class UserServices {
 
 	// Met à jour les informations personnelles d'un utilisateur
 	// Le username n'est pas modifiable (identifiant de connexion)
-	public User updateUser(UUID id, String firstname, String lastname, String email) {
+	// address et phone peuvent être null si non renseignés
+	public User updateUser(UUID id, String firstname, String lastname, String email, String address, String phone) {
 		User user = findById(id);
 		user.setFirstname(firstname);
 		user.setLastname(lastname);
 		user.setEmail(email);
+		user.setAddress(address);
+		user.setPhone(phone);
 		return userRepository.save(user);
 	}
 

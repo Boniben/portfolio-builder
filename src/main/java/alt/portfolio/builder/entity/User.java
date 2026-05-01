@@ -42,6 +42,14 @@ public class User implements UserDetails {
 	@Column(length = 255, nullable = true)
 	private String password;
 
+	// Adresse postale (optionnelle) — affichée dans les exports PDF
+	@Column(nullable = true)
+	private String address;
+
+	// Numéro de téléphone (optionnel, max 20 caractères)
+	@Column(length = 20, nullable = true)
+	private String phone;
+
 	// ✅ AJOUT : rôle simple stocké en base
 	// Valeurs attendues : "USER" ou "ADMIN"
 	@Column(length = 10, nullable = false)

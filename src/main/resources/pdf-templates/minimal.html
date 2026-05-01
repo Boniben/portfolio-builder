@@ -4,14 +4,20 @@
     <meta charset="UTF-8"/>
     <style>
         /* ===== TEMPLATE MINIMALISTE : épuré, typographie soignée ===== */
+        /* openhtmltopdf : pas de ::before/after content, pas de :last-child,
+           pas de margin:auto sur hr, pas de padding sur body */
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: "DejaVu Serif", Georgia, serif;
+            font-family: "DejaVu Sans", Arial, sans-serif;
             font-size: 11px;
             color: #2c2c2c;
             background: white;
+        }
+
+        /* Wrapper principal qui remplace le padding body */
+        .page {
             padding: 44px 52px;
         }
 
@@ -35,10 +41,10 @@
             line-height: 1.6;
         }
 
-        /* ---- Ligne de séparation centrale ---- */
+        /* ---- Séparateur : div a la place de hr (plus fiable en PDF) ---- */
         .divider {
-            border: none;
-            border-top: 1px solid #bbb;
+            height: 1px;
+            background: #bbb;
             width: 50%;
             margin: 0 auto 28px auto;
         }
@@ -62,10 +68,7 @@
         .item {
             margin-bottom: 10px;
             padding-bottom: 8px;
-            border-bottom: 1px dotted #e0e0e0;
-        }
-        .item:last-child {
-            border-bottom: none;
+            border-bottom: 1px solid #e0e0e0;
         }
         .item strong {
             font-size: 12px;
@@ -85,21 +88,33 @@
             line-height: 1.6;
             font-style: italic;
         }
+
+        /* ---- Contact centré sous la description ---- */
+        .contact-line {
+            text-align: center;
+            font-size: 10px;
+            color: #888;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
+<div class="page">
 
     <!-- En-tête centré : nom + description -->
     <div class="header">
         <h1>{{ownerName}}</h1>
         <div class="desc">{{description}}</div>
+        <!-- Informations de contact sur une ligne -->
+        <div class="contact-line">{{email}} | {{phone}} | {{address}}</div>
     </div>
 
-    <!-- Séparateur décoratif -->
-    <hr class="divider"/>
+    <!-- Séparateur : div au lieu de <hr> pour éviter les bugs openhtmltopdf -->
+    <div class="divider"></div>
 
     <!-- Rubriques générées par PdfService -->
     {{rubrics}}
 
+</div>
 </body>
 </html>

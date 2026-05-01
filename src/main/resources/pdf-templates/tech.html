@@ -27,13 +27,12 @@
             padding: 6px 28px;
             font-size: 10px;
             color: #888;
-            border-bottom: 1px solid #3c3c3c;
+            border-bottom: 3px solid #007acc;
         }
-        .tab-bar span {
+        /* span avec background/padding remplacé par un simple texte coloré */
+        .tab-bar .tab-label {
             color: #d4d4d4;
-            background: #1e1e1e;
-            padding: 4px 12px;
-            border-top: 2px solid #007acc;
+            font-weight: bold;
         }
 
         /* ---- Prompt terminal avant le nom ---- */
@@ -65,14 +64,14 @@
         }
 
         /* ---- Titre rubrique façon commentaire de code ---- */
+        /* ::before non supporté par openhtmltopdf — préfixe retiré, remplacé par style coloré */
         .rubric h3 {
             font-size: 11px;
             color: #6a9955;
             margin-bottom: 8px;
-            font-weight: normal;
-        }
-        .rubric h3::before {
-            content: "// ";
+            font-weight: bold;
+            padding-left: 14px;
+            border-left: 3px solid #6a9955;
         }
 
         /* ---- Chaque élément ---- */
@@ -89,24 +88,35 @@
             display: block;
             margin-bottom: 2px;
         }
+        /* ::before non supporté — couleur suffit à identifier les dates */
         .dates {
             font-size: 10px;
             color: #569cd6;
         }
-        .dates::before { content: "@ "; }
         .item p {
             font-size: 10px;
             color: #9cdcfe;
             margin-top: 3px;
             line-height: 1.5;
         }
+
+        /* ---- Bloc contact façon JSON ---- */
+        .contact-block {
+            background: #1e1e1e;
+            padding: 8px 28px 10px 28px;
+            font-size: 10px;
+            color: #ce9178;
+            border-bottom: 1px solid #3c3c3c;
+        }
+        .contact-block .ck { color: #9cdcfe; }
+        .contact-block .cv { color: #ce9178; }
     </style>
 </head>
 <body>
 
     <!-- Barre d'onglet façon IDE -->
     <div class="tab-bar">
-        <span>cv.json</span>
+        <span class="tab-label">cv.json</span>
     </div>
 
     <!-- En-tête façon terminal -->
@@ -114,6 +124,13 @@
         <div class="prompt">&gt; user.profile</div>
         <h1>{{ownerName}}</h1>
         <div class="desc">// {{description}}</div>
+    </div>
+
+    <!-- Infos de contact façon JSON -->
+    <div class="contact-block">
+        <span class="ck">"email"</span>: <span class="cv">"{{email}}"</span> &#160;|&#160;
+        <span class="ck">"phone"</span>: <span class="cv">"{{phone}}"</span> &#160;|&#160;
+        <span class="ck">"address"</span>: <span class="cv">"{{address}}"</span>
     </div>
 
     <!-- Corps : rubriques générées par PdfService -->

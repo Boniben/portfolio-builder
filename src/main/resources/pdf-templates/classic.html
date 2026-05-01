@@ -75,6 +75,17 @@
             margin-top: 3px;
             line-height: 1.5;
         }
+
+        /* ---- Barre de contact sous le header ---- */
+        .contact-bar {
+            background: #2e2e2e;
+            color: #aaaaaa;
+            padding: 8px 36px;
+            font-size: 10px;
+        }
+        .contact-bar span {
+            margin-right: 20px;
+        }
     </style>
 </head>
 <body>
@@ -83,6 +94,13 @@
     <div class="header">
         <h1>{{ownerName}}</h1>
         <div class="desc">{{description}}</div>
+    </div>
+
+    <!-- Barre de contact : email, téléphone, adresse -->
+    <div class="contact-bar">
+        <span>&#9993; {{email}}</span>
+        <span>&#9743; {{phone}}</span>
+        <span>&#8962; {{address}}</span>
     </div>
 
     <!-- Corps : rubriques générées par PdfService -->

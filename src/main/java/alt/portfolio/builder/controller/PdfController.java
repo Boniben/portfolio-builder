@@ -69,7 +69,10 @@ public class PdfController {
                 .body(pdfBytes);
 
         } catch (Exception e) {
-            System.err.println("Erreur génération PDF : " + e.getMessage());
+            // Log complet pour faciliter le débogage
+            System.err.println("=== ERREUR GÉNÉRATION PDF ===");
+            System.err.println("Message : " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }

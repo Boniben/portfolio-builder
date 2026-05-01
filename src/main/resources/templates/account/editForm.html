@@ -45,6 +45,20 @@
                 <input type="email" name="email" value="{{user.email}}" required />
             </div>
 
+            <!-- Téléphone (optionnel) -->
+            <div class="mb-8">
+                <label>Téléphone <small>(optionnel — affiché dans le PDF)</small></label>
+                <input type="tel" name="phone" value="{{user.phone}}"
+                       placeholder="Ex : 06 12 34 56 78" />
+            </div>
+
+            <!-- Adresse postale (optionnelle) -->
+            <div class="mb-8">
+                <label>Adresse <small>(optionnelle — affichée dans le PDF)</small></label>
+                <input type="text" name="address" value="{{user.address}}"
+                       placeholder="Ex : 10 rue de la Paix, 75001 Paris" />
+            </div>
+
             <!-- ===== SECTION CHANGEMENT DE MOT DE PASSE ===== -->
             <!-- Les champs sont optionnels : laisser vide pour ne pas changer le mdp -->
             <hr class="mt-8">
