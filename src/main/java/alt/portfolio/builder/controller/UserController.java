@@ -78,14 +78,33 @@ public class UserController {
     }
 
     // Enregistre les modifications apportées par l'admin à un utilisateur
-    // address et phone non modifiables ici (l'utilisateur les gère depuis son compte)
+    // L'admin peut aussi réinitialiser le mot de passe sans connaître l'ancien
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable UUID id,
             @RequestParam("firstname") String firstname,
             @RequestParam("lastname") String lastname,
-            @RequestParam("email") String email) {
-        // On passe null pour address et phone : l'admin ne les modifie pas
+            @RequestParam("email") String email,
+            @RequestParam(value = "newPassword", required = false) String newPassword,
+            Model model) {
+
+        // Mise à jour des infos de base (address et phone gérés par l'utilisateur lui-même)
         userService.updateUser(id, firstname, lastname, email, null, null);
+
+        // Réinitialisation du mot de passe si le champ est rempli
+        if (newPassword != null && !newPassword.isBlank()) {
+
+            // Validation : minimum 6 caractères
+            if (newPassword.length() < 6) {
+                User editUser = userService.findById(id);
+                model.addAttribute("editUser", editUser);
+                model.addAttribute("error", "Le mot de passe doit faire au moins 6 caractères.");
+                return "/users/adminEdit";
+            }
+
+            // Encodage et sauvegarde du nouveau mot de passe
+            userService.changePassword(id, newPassword);
+        }
+
         return "redirect:/users/show/" + id;
     }
 
