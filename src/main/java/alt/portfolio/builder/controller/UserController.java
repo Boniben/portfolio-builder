@@ -37,7 +37,7 @@ public class UserController {
     // Affiche la liste de tous les utilisateurs inscrits
     @GetMapping(path = { "", "/" })
     public ModelAndView index() {
-        return new ModelAndView("/users/index", "users", userService.getUsers());
+        return new ModelAndView("users/index", "users", userService.getUsers());
     }
 
     /* ================= DÉTAIL ================= */
@@ -47,7 +47,7 @@ public class UserController {
     public String show(@PathVariable UUID id, ModelMap model) {
         User user = userService.findById(id);
         model.addAttribute("showUser", user);
-        return "/users/show";
+        return "users/show";
     }
 
     /* ================= CRÉATION (admin crée un compte) ================= */
@@ -56,7 +56,7 @@ public class UserController {
     @GetMapping("/create")
     public String create(ModelMap model) {
         model.addAttribute("user", new User());
-        return "/users/Userform";
+        return "users/Userform";
     }
 
     // Enregistre le nouvel utilisateur créé par l'admin
@@ -74,7 +74,7 @@ public class UserController {
     public String editForm(@PathVariable UUID id, Model model) {
         User user = userService.findById(id);
         model.addAttribute("editUser", user);
-        return "/users/adminEdit";
+        return "users/adminEdit";
     }
 
     // Enregistre les modifications apportées par l'admin à un utilisateur
@@ -98,7 +98,7 @@ public class UserController {
                 User editUser = userService.findById(id);
                 model.addAttribute("editUser", editUser);
                 model.addAttribute("error", "Le mot de passe doit faire au moins 6 caractères.");
-                return "/users/adminEdit";
+                return "users/adminEdit";
             }
 
             // Encodage et sauvegarde du nouveau mot de passe
