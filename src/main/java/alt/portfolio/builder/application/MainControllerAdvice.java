@@ -13,7 +13,7 @@ public class MainControllerAdvice {
 
 	@ExceptionHandler(exception = EntityNotFoundException.class)
 	public ModelAndView entityNotFound() {
-		return new ModelAndView("error/404", HttpStatus.NOT_FOUND);
+		return new ModelAndView("erreurs/404", HttpStatus.NOT_FOUND);
 	}
 
 }
